@@ -1,3 +1,5 @@
+const path = require('path');
+
 module.exports = {
   env: {
     browser: true,
@@ -41,5 +43,13 @@ module.exports = {
     'consistent-return': 1,
     'react/jsx-props-no-spreading': 0,
     'react/react-in-jsx-scope': 0,
+  },
+  settings: {
+    'import/resolver': {
+      alias: {
+        map: [['@', path.resolve(__dirname, 'src/')]],
+        extensions: ['.js', '.jsx'],
+      },
+    },
   },
 };
