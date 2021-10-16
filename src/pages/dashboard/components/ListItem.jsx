@@ -13,11 +13,11 @@ const ListItem = (props) => {
     
     return (
         <>
-        <div className="block bg-white m-2 h-auto rounded-md p-2">
-            <div className = "inline-block h-100px w-100px m-1.5 mr-2.5">PICTURE</div>
+        <div className="block bg-white m-2 h-auto rounded-md p-2 flex flex-row">
+            <div className = "inline-block m-1.5 mr-2.5 flex-grow-0 flex-shrink-0 overflow-hidden" style = {{height: '75px', width: '75px', borderRadius: '37.5px'}}><img src = "assets/Topias.png" /></div>
             <div className = "inline-block">
-                <p className = "block">{tweetData.name}</p>
-                <p className = "block">{tweetData.tweet}</p>
+                <p className = "block"> Topias &quot;Flopson&quot;  Daddy</p>
+                <p className = "block">{tweetData.full_text}</p>
             </div>
         </div>
         </>

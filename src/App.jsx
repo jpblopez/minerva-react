@@ -11,8 +11,10 @@ function App() {
         <Switch>
           <Redirect from="/" exact to="/dashboard" />
           <Route path="/dashboard" render={() => <Dashboard/>} />
-          <Route path="/analyze" />
-          <Route path="/settings" />
+          <Route path="/preprocessing" render = {() => "Preprocessing"} />
+          <Route path="/model-building" render = {() => "Model"} />
+          <Route path="/analyze" render = {() => "Analysis"} />
+          <Route path="/settings" render = {() => "Settings"} />
         </Switch>
       </div>
     </main>

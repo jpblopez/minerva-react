@@ -3,13 +3,15 @@ import {
   AiOutlineClose as Close,
   AiOutlineHome as Home,
   AiOutlineSetting as Settings,
+  AiOutlineSync as Process,
+  AiOutlineLayout as Model,
 } from 'react-icons/ai';
 import { BiBrain as Analyze } from 'react-icons/bi';
 
 import { NavLink } from 'react-router-dom';
 
 const sidebarClass =
-  'fixed md:relative top-0 min-h-screen bg-gray-800 text-white w-1/2 md:w-1/5 flex flex-col transform duration-300 ease-out';
+  'fixed md:relative top-0 min-h-screen bg-gray-800 text-white w-1/3 md:w-1/6 flex flex-col transform duration-300 ease-out flex-shrink-0';
 
 const computeClass = (open) =>
   sidebarClass + (open ? ' translate-x-0' : ' -translate-x-full');
@@ -41,7 +43,21 @@ const Sidebar = () => {
             <span>Dashboard</span>
           </NavLink>
           <NavLink
-            to="/analyse"
+            to="/preprocessing"
+            className="flex flex-row gap-3 pl-4 py-2 text-gray-400 sidebar-link"
+          >
+            <Process size={20} />
+            <span>Preprocessing</span>
+          </NavLink>
+          <NavLink
+            to="/model-building"
+            className="flex flex-row gap-3 pl-4 py-2 text-gray-400 sidebar-link"
+          >
+            <Model size={20} />
+            <span>Model Building</span>
+          </NavLink>
+          <NavLink
+            to="/analyze"
             className="flex flex-row gap-3 pl-4 py-2 text-gray-400 sidebar-link"
           >
             <Analyze size={20} />
