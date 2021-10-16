@@ -5,6 +5,12 @@ const Dashboard = () => {
   const [open, setOpen] = useState(true);
 
   const mockTweets = [
+      {name: "Redempto D. Legaspi III", tweet: "Tweet Tweet Tweet "}, 
+      {name: "Rhyan Larosa", tweet: "Tweet Tweet Tweet 2"}, 
+      {name: "John Paul Lopez", tweet: "Tweet Tweet Tweet 3"}, 
+      {name: "Redempto D. Legaspi III", tweet: "Tweet Tweet Tweet"}, 
+      {name: "Rhyan Larosa", tweet: "Tweet Tweet Tweet 2"}, 
+      {name: "John Paul Lopez", tweet: "Tweet Tweet Tweet 3"}, 
       {name: "Redempto D. Legaspi III", tweet: "Tweet Tweet Tweet"}, 
       {name: "Rhyan Larosa", tweet: "Tweet Tweet Tweet 2"}, 
       {name: "John Paul Lopez", tweet: "Tweet Tweet Tweet 3"}, 
@@ -17,8 +23,14 @@ const Dashboard = () => {
 
   return (
     <>
-    <div className = "overflow-y-scroll h-1/4 w-2/5">
-      {mockTweets.map(tweet => (<ListItem tweetData = {tweet}/>))}
+    <div className = "h-2/5 w-full">
+      <div className = "h-auto w-full bg-gray-100 p-1.5">
+        <input type = "text" name = "searchBar" className = "mr-2 rounded-sm"/>
+        <input type = "submit" name = "searchSubmit" value="Search"/>
+      </div>
+      <div className = "h-full overflow-y-scroll">
+        {mockTweets.map(tweet => (<ListItem tweetData = {tweet}/>))}
+      </div>
     </div>
     </>
   );
