@@ -2,6 +2,7 @@ import React from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import Sidebar from '@/components/Sidebar';
 import Dashboard from '@/pages/dashboard/Dashboard'
+import Sentiment from '@/pages/analyze/Sentiment'
 
 function App() {
   return (
@@ -13,7 +14,7 @@ function App() {
           <Route path="/dashboard" render={() => <Dashboard/>} />
           <Route path="/preprocessing" render = {() => "Preprocessing"} />
           <Route path="/model-building" render = {() => "Model"} />
-          <Route path="/analyze" render = {() => "Analysis"} />
+          <Route path="/analyze" render = {() => <Sentiment/>} />
           <Route path="/settings" render = {() => "Settings"} />
         </Switch>
       </div>
