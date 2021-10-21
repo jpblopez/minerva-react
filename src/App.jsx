@@ -1,8 +1,8 @@
 import React from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import Sidebar from '@/components/Sidebar';
-import Dashboard from '@/pages/dashboard/Dashboard'
-import Sentiment from '@/pages/analyze/Sentiment'
+import Dashboard from '@/pages/dashboard/Dashboard';
+import Sentiment from '@/pages/analyze/Sentiment';
 
 function App() {
   return (
@@ -11,11 +11,11 @@ function App() {
       <div className="flex-grow bg-red-100 p-4 md:h-auto min-h-screen md:min-h-0">
         <Switch>
           <Redirect from="/" exact to="/dashboard" />
-          <Route path="/dashboard" render={() => <Dashboard/>} />
-          <Route path="/preprocessing" render = {() => "Preprocessing"} />
-          <Route path="/model-building" render = {() => "Model"} />
-          <Route path="/analyze" render = {() => <Sentiment/>} />
-          <Route path="/settings" render = {() => "Settings"} />
+          <Route path="/dashboard" render={() => <Dashboard />} />
+          <Route path="/preprocessing" render={() => 'Preprocessing'} />
+          <Route path="/model-building" render={() => 'Model'} />
+          <Route path="/analyze" render={() => <Sentiment />} />
+          <Route path="/settings" render={() => 'Settings'} />
         </Switch>
       </div>
     </main>

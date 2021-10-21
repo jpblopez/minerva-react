@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import ListSenti from './components/ListSenti'
-import FlaskApi from '@/services/api'
+import ListSenti from './components/ListSenti';
+import FlaskApi from '@/services/api';
 
 const Sentiment = () => {
   const [open, setOpen] = useState(true);
@@ -9,12 +9,11 @@ const Sentiment = () => {
   const [dbData, setDbData] = useState([]);
 
   useEffect(() => {
-    FlaskApi.getDbData().then((response) => {
-      setDbData(response.data)
-      console.log(response.data)
-    })
-  }, [])
-
+    FlaskApi.getSentiment().then((response) => {
+      setDbData(response.data);
+      console.log(response.data);
+    });
+  }, []);
 
   const close = () => {
     setOpen(false);
@@ -23,13 +22,18 @@ const Sentiment = () => {
 
   return (
     <>
-      <div className="w-full" style = {{height: '40vh'}}>
+      <div className="max-h-screen overflow-hidden flex-col flex">
+        <p>Graph</p>
+      </div>
+      <div className="max-h-screen overflow-hidden flex-col flex">
         <div className="h-auto w-full bg-gray-100 p-1.5">
           <input type="text" name="searchBar" className="mr-2 rounded-sm" />
           <input type="submit" name="searchSubmit" value="Search" />
         </div>
-        <div className="h-full overflow-y-scroll">
-          {dbData.map(senti => (<ListSenti sentiData={senti} />))}
+        <div className="flex-grow-0 max-h-1/2 overflow-scroll">
+          {dbData.map((senti) => (
+            <ListSenti sentiData={senti} />
+          ))}
         </div>
       </div>
     </>
