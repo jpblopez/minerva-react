@@ -1,11 +1,17 @@
 import axios from 'axios';
 
-const baseUrl = "http://127.0.0.1:5000/tweets"
+const api = axios.create({
+  baseURL: 'http://127.0.0.1:5000/',
+});
 
 class FlaskApi {
-    static getDbData() {
-        return axios.get(baseUrl)
-    }
+  static getDbData() {
+    return api.get('/tweets');
+  }
+
+  static getData() {
+    return api.get('/data');
+  }
 }
 
 export default FlaskApi;

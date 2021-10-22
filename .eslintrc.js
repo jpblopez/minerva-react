@@ -43,6 +43,7 @@ module.exports = {
     'consistent-return': 1,
     'react/jsx-props-no-spreading': 0,
     'react/react-in-jsx-scope': 0,
+    'no-plusplus': 0,
   },
   settings: {
     'import/resolver': {
