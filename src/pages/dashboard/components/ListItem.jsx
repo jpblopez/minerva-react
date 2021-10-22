@@ -1,5 +1,4 @@
-import React from 'react'
-
+import React from 'react';
 
 const ListItem = (props) => {
     /*
@@ -19,8 +18,13 @@ const ListItem = (props) => {
                 <p className = "block">{tweetData.full_text}</p>
             </div>
         </div>
-        </>
-    )
-}
+        <div className="inline-block">
+          <p className="block"> Topias &quot;Flopson&quot; Daddy</p>
+          <p className="block">{tweetData.full_text}</p>
+        </div>
+      </div>
+    </>
+  );
+};
 
 export default ListItem;

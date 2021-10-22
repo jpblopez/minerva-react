@@ -45,6 +45,7 @@ module.exports = {
     'react/react-in-jsx-scope': 0,
     'no-param-reassign': 0,
     'no-plusplus' : 0
+    'no-nested-ternary': 0,
   },
   settings: {
     'import/resolver': {
