@@ -18,11 +18,6 @@ const ListItem = (props) => {
                 <p className = "block">{tweetData.full_text}</p>
             </div>
         </div>
-        <div className="inline-block">
-          <p className="block"> Topias &quot;Flopson&quot; Daddy</p>
-          <p className="block">{tweetData.full_text}</p>
-        </div>
-      </div>
     </>
   );
 };

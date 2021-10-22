@@ -13,6 +13,7 @@ class FlaskApi {
   static getData() {
     return api.get('/data');
   }
+  
   static getSentiment() {
     return axios.get(sentimentUrl);
   }
