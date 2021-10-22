@@ -7,3 +7,15 @@ body {
 .sidebar-link.active {
   @apply text-indigo-400;
 }
+
+.scroll-table {
+  overflow: auto;
+  height: 500px;
+  display: inline-block;
+  margin-top: 45px;
+}
+
+thead div {
+  margin-top: -45px;
+  position: absolute;
+}
