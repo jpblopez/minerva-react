@@ -11,11 +11,11 @@ const ListSenti = (props) => {
     tweet
     */
   if (sentiData.sentiment === 'Negative') {
-    classname = 'text-red-500 font-bold';
+    classname = 'text-red-400 font-bold';
   } else if (sentiData.sentiment === 'Positive') {
-    classname = 'text-green-500 font-bold';
+    classname = 'text-green-400 font-bold';
   } else if (sentiData.sentiment === 'Neutral') {
-    classname = 'text-gray-500 font-bold';
+    classname = 'text-blue-400 font-bold';
   }
 
   return (
