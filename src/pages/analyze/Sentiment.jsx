@@ -94,7 +94,7 @@ const Sentiment = () => {
   };
 
   useEffect(() => {
-    FlaskApi.getSentiment().then((response) => {
+    FlaskApi.getData().then((response) => {
       setDbData(response.data);
     });
     document.querySelector('.year-button').classList.add('bg-indigo-500');
