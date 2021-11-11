@@ -3,6 +3,7 @@ import { Switch, Route, Redirect } from 'react-router-dom';
 import Sidebar from '@/components/Sidebar';
 import Dashboard from '@/pages/dashboard/Dashboard';
 import Preprocessing from '@/pages/preprocessing/Preprocessing';
+import ModelBuilding from '@/pages/model_building/ModelBuilding';
 import Sentiment from '@/pages/analyze/Sentiment';
 import Tweets from '@/pages/preprocessing/Tweets';
 import Tokens from '@/pages/preprocessing/Tokens';

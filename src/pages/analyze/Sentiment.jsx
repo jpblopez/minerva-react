@@ -18,15 +18,12 @@ const Sentiment = () => {
   /* TODO: replace useState with api call */
   const [dbData, setDbData] = useState([]);
   useEffect(() => {
-    console.log('hello');
     const postemp = Array(12).fill(0);
     const neutemp = Array(12).fill(0);
     const negtemp = Array(12).fill(0);
     dbData.forEach((data) => {
       const month = new Date(data.created_at).getMonth();
       const year = new Date(data.created_at).getYear();
-      console.log(year);
-      console.log(formats);
       if (year + 1900 === +formats) {
         if (data.sentiment === 'Positive') {
           postemp[month] += 1;

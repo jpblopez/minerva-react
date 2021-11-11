@@ -16,6 +16,9 @@ class FlaskApi {
   static getTokens() {
     return api.get('/tokens');
   }
+  static getModel() {
+    return api.get('/model');
+  }
 }
 
 export default FlaskApi;

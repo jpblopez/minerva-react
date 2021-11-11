@@ -48,6 +48,7 @@ module.exports = {
     'no-nested-ternary': 0,
     'no-unreachable': 0,
     'react/destructuring-assignment': 0,
+    'no-restricted-syntax': 0,
   },
   settings: {
     'import/resolver': {
