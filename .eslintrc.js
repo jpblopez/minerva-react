@@ -46,6 +46,7 @@ module.exports = {
     'no-param-reassign': 0,
     'no-plusplus' : 0,
     'no-nested-ternary': 0,
+    'no-restricted-syntax': 0,
   },
   settings: {
     'import/resolver': {

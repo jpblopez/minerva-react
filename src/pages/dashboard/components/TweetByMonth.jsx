@@ -5,26 +5,26 @@ import {
 
 
 const TweetByMonth = (props) => {
-    const {dbData} = props
+    const { dbData } = props
     const timeNow = new Date()
     let timeTweet = new Date()
     let timeBetween = 0
     let timeLabelTemp = new Date()
-    const tweetByDay = Array.from({length:12}).fill(0)
+    const tweetByDay = Array.from({ length: 12 }).fill(0)
 
     const labelList = [12]
-    
-    for (let i = 0; i<12; i++) {
+
+    for (let i = 0; i < 12; i++) {
         timeLabelTemp = new Date()
 
         if (timeNow.getUTCMonth() - i < 0) {
             timeLabelTemp.setUTCFullYear(timeLabelTemp.getUTCFullYear())
-            timeLabelTemp.setUTCMonth((timeNow.getUTCMonth()-i)%12)
+            timeLabelTemp.setUTCMonth((timeNow.getUTCMonth() - i) % 12)
         }
         else {
             timeLabelTemp.setUTCMonth(timeNow.getUTCMonth() - i)
         }
-        
+
         labelList[i] = timeLabelTemp.toUTCString().slice(8, 16)
     }
 
@@ -38,36 +38,36 @@ const TweetByMonth = (props) => {
     labelList.reverse()
     tweetByDay.reverse()
     const data = {
-      labels: labelList,
-      datasets: [
-        {
-          label: '# of Tweets past 12 months',
-          data: tweetByDay,
-          fill: false,
-          backgroundColor: 'rgb(255, 99, 132)',
-          borderColor: 'rgba(255, 99, 132, 0.2)',
-          yAxisID: 'y-axis-1',
-        },
-      ],
-    };
-    
-    const options = {
-      scales: {
-        yAxes: [
-          {
-            type: 'linear',
-            display: true,
-            position: 'left',
-            id: 'y-axis-1',
-          },
+        labels: labelList,
+        datasets: [
+            {
+                label: '# of Tweets past 12 months',
+                data: tweetByDay,
+                fill: false,
+                backgroundColor: 'rgb(255, 99, 132)',
+                borderColor: 'rgba(255, 99, 132, 0.2)',
+                yAxisID: 'y-axis-1',
+            },
         ],
-      },
-      maintainAspectRatio: false,
+    };
+
+    const options = {
+        scales: {
+            yAxes: [
+                {
+                    type: 'linear',
+                    display: true,
+                    position: 'left',
+                    id: 'y-axis-1',
+                },
+            ],
+        },
+        maintainAspectRatio: false,
     };
     return (
-    <>
-        <Line data={data} options={options} />
-    </>
+        <>
+            <Line data={data} options={options} />
+        </>
     )
 }
 
