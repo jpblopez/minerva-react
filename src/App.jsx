@@ -3,6 +3,7 @@ import { Switch, Route, Redirect } from 'react-router-dom';
 import Sidebar from '@/components/Sidebar';
 import Dashboard from '@/pages/dashboard/Dashboard';
 import Preprocessing from '@/pages/preprocessing/Preprocessing';
+import ModelBuilding from '@/pages/model_building/ModelBuilding'
 import Sentiment from '@/pages/analyze/Sentiment';
 
 function App() {
@@ -14,7 +15,7 @@ function App() {
           <Redirect from="/" exact to="/dashboard" />
           <Route path="/dashboard" render={() => <Dashboard />} />
           <Route path="/preprocessing" render={() => <Preprocessing />} />
-          <Route path="/model-building" render={() => 'Model'} />
+          <Route path="/model-building" render={() => <ModelBuilding />} />
           <Route path="/settings" render={() => 'Settings'} />
           <Route path="/analyze" render={() => <Sentiment />} />
         </Switch>

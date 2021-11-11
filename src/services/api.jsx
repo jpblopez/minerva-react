@@ -12,6 +12,10 @@ class FlaskApi {
   static getData() {
     return api.get('/data');
   }
+
+  static getModel() {
+    return api.get('/model');
+  }
 }
 
 export default FlaskApi;

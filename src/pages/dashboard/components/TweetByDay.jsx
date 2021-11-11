@@ -5,16 +5,16 @@ import {
 
 
 const TweetByDay = (props) => {
-    const {dbData} = props
+    const { dbData } = props
     const timeNow = new Date()
     let timeTweet = new Date()
     let timeLabelTemp = new Date()
     let timeBetween = 0
-    const tweetByDay = Array.from({length:30}).fill(0)
+    const tweetByDay = Array.from({ length: 30 }).fill(0)
 
     const labelList = [30]
-    
-    for (let i = 0; i<30; i++) {
+
+    for (let i = 0; i < 30; i++) {
         timeLabelTemp = new Date(timeNow.getTime() - (1000 * 60 * 60 * 24 * i))
         labelList[i] = timeLabelTemp.toUTCString().slice(5, 16)
     }
@@ -30,36 +30,36 @@ const TweetByDay = (props) => {
     labelList.reverse()
     tweetByDay.reverse()
     const data = {
-      labels: labelList,
-      datasets: [
-        {
-          label: '# of Tweet past 30 days',
-          data: tweetByDay,
-          fill: false,
-          backgroundColor: 'rgb(255, 99, 132)',
-          borderColor: 'rgba(255, 99, 132, 0.2)',
-          yAxisID: 'y-axis-1',
-        },
-      ],
-    };
-    
-    const options = {
-      scales: {
-        yAxes: [
-          {
-            type: 'linear',
-            display: true,
-            position: 'left',
-            id: 'y-axis-1',
-          },
+        labels: labelList,
+        datasets: [
+            {
+                label: '# of Tweet past 30 days',
+                data: tweetByDay,
+                fill: false,
+                backgroundColor: 'rgb(255, 99, 132)',
+                borderColor: 'rgba(255, 99, 132, 0.2)',
+                yAxisID: 'y-axis-1',
+            },
         ],
-      },
-      maintainAspectRatio: false,
+    };
+
+    const options = {
+        scales: {
+            yAxes: [
+                {
+                    type: 'linear',
+                    display: true,
+                    position: 'left',
+                    id: 'y-axis-1',
+                },
+            ],
+        },
+        maintainAspectRatio: false,
     };
     return (
-    <>
-        <Line data={data} options={options} />
-    </>
+        <>
+            <Line data={data} options={options} />
+        </>
     )
 }
 
