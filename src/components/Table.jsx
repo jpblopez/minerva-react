@@ -6,18 +6,20 @@ const Table = ({ data, cols, headers }) => {
   const [current, setCurrent] = useState([]);
 
   useEffect(() => {
-    setPages(Math.ceil(data.length / 10));
+    if (data && data.length) {
+      setPages(Math.ceil(data.length / 10));
 
-    const start = active * 10;
-    const end = Math.min(start + 10, data.length);
-    const viewable = data.slice(start, end);
+      const start = active * 10;
+      const end = Math.min(start + 10, data.length);
+      const viewable = data.slice(start, end);
 
-    setCurrent(viewable);
+      setCurrent(viewable);
+    }
   }, [data, setCurrent, active]);
 
   const changeActive = useCallback((i) => () => setActive(i), []);
 
-  if (!data.length) return 'No data available';
+  if (!data || !data.length) return 'No data available';
 
   return (
     <>
