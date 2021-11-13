@@ -7,6 +7,7 @@ import ModelBuilding from '@/pages/model_building/ModelBuilding';
 import Sentiment from '@/pages/analyze/Sentiment';
 import Tweets from '@/pages/preprocessing/Tweets';
 import Tokens from '@/pages/preprocessing/Tokens';
+// import Vectors from '@/pages/preprocessing/Vectors';
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
             />
             <Route path="/preprocessing/tweets" render={() => <Tweets />} />
             <Route path="/preprocessing/tokens" render={() => <Tokens />} />
+            {/* <Route path="/preprocessing/vectors" render={() => <Vectors />} /> */}
             <Route path="/model-building" render={() => 'Model'} />
             <Route path="/settings" render={() => 'Settings'} />
             <Route path="/analyze" render={() => <Sentiment />} />

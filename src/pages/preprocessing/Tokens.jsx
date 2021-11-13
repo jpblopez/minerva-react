@@ -32,7 +32,6 @@ const Tokens = () => {
   }, []);
 
   const dataView = useMemo(() => {
-    console.log(data);
     if (!data) return;
 
     if (view === 'all') return data.frequencies;
@@ -46,69 +45,75 @@ const Tokens = () => {
     return map;
   }, [view, data]);
 
-  const renderTable = Object.entries(dataView).length > 0;
+  const renderTable = dataView && Object.entries(dataView).length > 0;
 
   return (
     <>
-      <div className="mb-4">
-        <button
-          type="button"
-          className={computeClass(view, 'all')}
-          onClick={changeView('all')}
-        >
-          All Tokens
-        </button>
+      <div className="bg-white p-4 rounded-md">
+        <div className="mb-4">
+          <button
+            type="button"
+            className={computeClass(view, 'all')}
+            onClick={changeView('all')}
+          >
+            All Tokens
+          </button>
 
-        <button
-          type="button"
-          className={computeClass(view, 'uni')}
-          onClick={changeView('uni')}
-        >
-          Unigrams
-        </button>
-        <button
-          type="button"
-          className={computeClass(view, 'bi')}
-          onClick={changeView('bi')}
-        >
-          Bigrams
-        </button>
-        <button
-          type="button"
-          className={computeClass(view, 'tri')}
-          onClick={changeView('tri')}
-        >
-          Trigrams
-        </button>
+          <button
+            type="button"
+            className={computeClass(view, 'uni')}
+            onClick={changeView('uni')}
+          >
+            Unigrams
+          </button>
+          <button
+            type="button"
+            className={computeClass(view, 'bi')}
+            onClick={changeView('bi')}
+          >
+            Bigrams
+          </button>
+          <button
+            type="button"
+            className={computeClass(view, 'tri')}
+            onClick={changeView('tri')}
+          >
+            Trigrams
+          </button>
+        </div>
+
+        {loading ? (
+          <Loading styling="my-16" />
+        ) : data && renderTable ? (
+          <table className="w-full">
+            <thead>
+              <tr>
+                <td>Token</td>
+                <td>Number of containing documents</td>
+                <td>Total number of occurences</td>
+              </tr>
+            </thead>
+            <tbody>
+              {Object.keys(dataView).map((key, index) => {
+                const item = dataView[key];
+                const classname = `${
+                  index % 2 === 0 ? 'bg-gray-100' : ''
+                } hover:bg-indigo-50 cursor-default`;
+
+                return (
+                  <tr className={classname}>
+                    <td className="p-2">{key}</td>
+                    <td className="p-2">{item.dfs}</td>
+                    <td className="p-2">{item.cfs}</td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        ) : (
+          'No data available'
+        )}
       </div>
-      {loading ? (
-        <Loading styling="mt-16" />
-      ) : data && renderTable ? (
-        <table>
-          <thead>
-            <tr>
-              <td>Token</td>
-              <td>Number of containing documents</td>
-              <td>Total number of occurences</td>
-            </tr>
-          </thead>
-          <tbody>
-            {Object.keys(dataView).map((key) => {
-              const item = dataView[key];
-
-              return (
-                <tr>
-                  <td>{key}</td>
-                  <td>{item.dfs}</td>
-                  <td>{item.cfs}</td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      ) : (
-        'No data available'
-      )}
     </>
   );
 };

@@ -63,6 +63,20 @@ const Sidebar = () => {
           </NavLink>
 
           <NavLink
+            to="/preprocessing/tokens"
+            className="flex flex-row gap-3 pl-4 py-2 text-gray-400 sidebar-link pl-12"
+          >
+            <span>Tokens</span>
+          </NavLink>
+          {/* 
+          <NavLink
+            to="/preprocessing/vectors"
+            className="flex flex-row gap-3 pl-4 py-2 text-gray-400 sidebar-link pl-12"
+          >
+            <span>Vectors</span>
+          </NavLink> */}
+
+          <NavLink
             to="/model-building"
             className="flex flex-row gap-3 pl-4 py-2 text-gray-400 sidebar-link"
           >

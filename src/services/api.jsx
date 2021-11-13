@@ -16,8 +16,13 @@ class FlaskApi {
   static getTokens() {
     return api.get('/tokens');
   }
+
   static getModel() {
     return api.get('/model');
+  }
+
+  static getVectors() {
+    return api.get('/tfidf');
   }
 }
 

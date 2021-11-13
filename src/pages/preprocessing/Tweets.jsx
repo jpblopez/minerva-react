@@ -38,7 +38,7 @@ const Tweets = () => {
   }, []);
 
   return (
-    <>
+    <div className="bg-white p-4 rounded-md">
       <div className="mb-4">
         <button
           type="button"
@@ -56,7 +56,7 @@ const Tweets = () => {
         </button>
       </div>
       <Table data={data} cols={cols[view]} headers={headers} />
-    </>
+    </div>
   );
 };
 
