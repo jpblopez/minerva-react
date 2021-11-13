@@ -8,7 +8,7 @@ const ModelTable = ({ data }) => {
 
     Object.keys(data).forEach(row => {
         Object.keys(data[row]).forEach(col => {
-            const keywords = data[row][col]
+            const {keywords, _} = data[row][col]
             if (keywords.length !== 0) {
                 tempData.push({ row, col, keywords })
             }
