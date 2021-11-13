@@ -13,12 +13,16 @@ class FlaskApi {
     return api.get('/data');
   }
 
+  static getTokens() {
+    return api.get('/tokens');
+  }
+
   static getModel() {
     return api.get('/model');
   }
-  
-  static getModelTweets() {
-    return api.get('/model/tweets')
+
+  static getVectors() {
+    return api.get('/tfidf');
   }
 }
 

@@ -44,8 +44,10 @@ module.exports = {
     'react/jsx-props-no-spreading': 0,
     'react/react-in-jsx-scope': 0,
     'no-param-reassign': 0,
-    'no-plusplus' : 0,
+    'no-plusplus': 0,
     'no-nested-ternary': 0,
+    'no-unreachable': 0,
+    'react/destructuring-assignment': 0,
     'no-restricted-syntax': 0,
   },
   settings: {
