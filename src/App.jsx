@@ -27,7 +27,7 @@ function App() {
             <Route path="/preprocessing/tweets" render={() => <Tweets />} />
             <Route path="/preprocessing/tokens" render={() => <Tokens />} />
             {/* <Route path="/preprocessing/vectors" render={() => <Vectors />} /> */}
-            <Route path="/model-building" render={() => 'Model'} />
+            <Route path="/model-building" render={() => <ModelBuilding />} />
             <Route path="/settings" render={() => 'Settings'} />
             <Route path="/analyze" render={() => <Sentiment />} />
           </Switch>
