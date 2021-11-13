@@ -2,12 +2,20 @@ import { useState, useEffect } from 'react';
 import api from '@/services/api';
 import Widget from '@/components/Widget';
 import Table from '@/components/Table';
+import Loading from '@/components/Loading';
+
+// TODO make an index
+// must have most used tokens, number of tokens, bigrams, uni, trigrams
+
+// todo list of tokens page and their frequency
 
 const dateToString = (date) => new Date(date.created_at).toLocaleDateString();
-const arrayJoin = (col) => (arr) => arr[col].join(', ') || 'No tokens';
+const arrayJoin = (col) => (arr) =>
+  arr[col].join(', ') || <span className="text-red-500">No tokens</span>;
 
 const Preprocessing = () => {
   const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(false);
   const [unigrams, setUnigrams] = useState();
   const [bigrams, setBigrams] = useState();
   const [trigrams, setTrigrams] = useState();
@@ -15,11 +23,16 @@ const Preprocessing = () => {
   const [cols, setCols] = useState(['id', 'full_text', dateToString]);
 
   useEffect(() => {
-    api.getData().then((res) => {
-      const { data: tweets } = res;
+    setLoading(true);
+    api
+      .getData()
+      .then((res) => {
+        const { data: tweets } = res;
 
-      setData(tweets);
-    });
+        setData(tweets);
+        setLoading(false);
+      })
+      .finally(() => setLoading(false));
   }, []);
 
   useEffect(() => {
@@ -71,45 +84,46 @@ const Preprocessing = () => {
     }
   };
 
-  if (data.length === 0)
-    return <div className="bg-white rounded-md shadow p-4">No tweets yet</div>;
-
   return (
     <div className="bg-white rounded-md shadow p-4">
       <div className="text-4xl ml-2 mb-8">Tweets</div>
-      <div className="flex flex-row gap-8 mb-8 items-center">
-        <Widget
-          styling="bg-indigo-500 text-white cursor-pointer"
-          title="Number of Tweets"
-          text={data.length}
-          onClick={changeView('tweets')}
-        />
-        <Widget
-          styling="bg-green-400 text-white cursor-pointer"
-          title="Number of Unigrams"
-          text={unigrams}
-          onClick={changeView('unigrams')}
-        />
-        <Widget
-          styling="bg-gray-500 text-white cursor-pointer"
-          title="Number of Bigrams"
-          text={bigrams}
-          onClick={changeView('bigrams')}
-        />
-        <Widget
-          styling="bg-blue-400 text-white cursor-pointer"
-          title="Number of Trigrams"
-          text={trigrams}
-          onClick={changeView('trigrams')}
-        />
-        <Widget
-          styling="bg-pink-400 text-white cursor-pointer"
-          title="Number of Tokens"
-          text={unigrams + bigrams + trigrams}
-          onClick={changeView('tokens')}
-        />
-      </div>
-      <Table data={data} cols={cols} headers={headers} />
+      {(loading && <Loading styling="h-32 w-full" />) || (
+        <>
+          <div className="flex flex-row gap-8 mb-8 items-center">
+            <Widget
+              styling="bg-indigo-500 text-white cursor-pointer hover:shadow-md transition ease-in-out duration-300"
+              title="Number of Tweets"
+              text={data.length}
+              onClick={changeView('tweets')}
+            />
+            <Widget
+              styling="bg-green-400 text-white cursor-pointer hover:shadow-md transition ease-in-out duration-300"
+              title="Number of Unigrams"
+              text={unigrams}
+              onClick={changeView('unigrams')}
+            />
+            <Widget
+              styling="bg-gray-500 text-white cursor-pointer hover:shadow-md transition ease-in-out duration-300"
+              title="Number of Bigrams"
+              text={bigrams}
+              onClick={changeView('bigrams')}
+            />
+            <Widget
+              styling="bg-blue-400 text-white cursor-pointer hover:shadow-md transition ease-in-out duration-300"
+              title="Number of Trigrams"
+              text={trigrams}
+              onClick={changeView('trigrams')}
+            />
+            <Widget
+              styling="bg-pink-400 text-white cursor-pointer"
+              title="Number of Tokens"
+              text={unigrams + bigrams + trigrams}
+              onClick={changeView('tokens')}
+            />
+          </div>
+          <Table data={data} cols={cols} headers={headers} />
+        </>
+      )}
     </div>
   );
 };
