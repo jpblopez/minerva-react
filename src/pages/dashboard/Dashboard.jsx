@@ -11,6 +11,7 @@ const Dashboard = () => {
 
   /* TODO: replace useState with api call */
   const [dbData, setDbData] = useState([]);
+  const [tweetData, setTweetData] = useState([]);
 
   useEffect(() => {
     FlaskApi.getDbData().then((response) => {
@@ -22,6 +23,12 @@ const Dashboard = () => {
       //   item.isVisible = true
       // })
       setDbData(copy)
+    })
+  }, [])
+
+  useEffect(() => {
+    FlaskApi.getData().then((response) => {
+      setTweetData(response.data)
     })
   }, [])
 
@@ -86,7 +93,7 @@ const Dashboard = () => {
               <TweetByMonth dbData={dbData} />
             </div>
             <div className="h-full p-2 bg-red-100 rounded-md inline-block flex flex-row justify-around" style={{ width: '25vw' }}>
-              <TweetTotals/>
+              <TweetTotals tweetData = {tweetData}/>
             </div>
           </div>
         </div>
