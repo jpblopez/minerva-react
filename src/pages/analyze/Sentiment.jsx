@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Bar } from 'react-chartjs-2';
-import { Dropdown, DropdownButton } from 'react-bootstrap';
 import ListSenti from './components/ListSenti';
 import FlaskApi from '@/services/api';
 
@@ -97,16 +96,15 @@ const Sentiment = () => {
     FlaskApi.getModel().then((response) => {
       Object.keys(response.data).forEach((row) => {
         Object.keys(response.data[row]).forEach((col) => {
-          const keywords = response.data[row][col];
-          if (keywords.length !== 0) {
-            temp.push({ row, col, keywords });
+          const { keywords, tweets } = response.data[row][col];
+          if (tweets.length !== 0) {
+            temp.push({ row, col, keywords, tweets });
           }
         });
       });
       setTempData(temp);
     });
   }, []);
-
   const change = (e, year) => {
     document.querySelectorAll('.year-button').forEach((item) => {
       item.classList.remove('bg-indigo-500');
@@ -116,13 +114,11 @@ const Sentiment = () => {
     e.target.classList.add('text-white');
     setFormats(year);
   };
-
+  console.log(tempData);
   const changeIndex = () => {
     const select = document.getElementById('select');
     setIndex(select.value);
-    console.log(newIndex);
   };
-  console.log(tempData);
   return (
     <>
       <Bar data={chartData} options={chartBarOptions} />
@@ -144,7 +140,7 @@ const Sentiment = () => {
         <div className="flex-grow-0 max-h-1/2 overflow-scroll">
           {dbData.map((senti) => {
             if (formats === 'All Time') {
-              return <ListSenti sentiData={senti} />;
+              return <ListSenti sentiData={senti.full_text} />;
             }
             if (formats === '2020' || formats === '2021') {
               const compareYear = new Date(senti.created_at).getYear();
