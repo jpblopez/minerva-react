@@ -16,6 +16,10 @@ class FlaskApi {
   static getModel() {
     return api.get('/model');
   }
+  
+  static getModelTweets() {
+    return api.get('/model/tweets')
+  }
 }
 
 export default FlaskApi;
