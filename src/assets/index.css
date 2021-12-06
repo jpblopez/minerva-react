@@ -1,0 +1,99 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+
+@font-face {
+  font-family: 'Satoshi';
+  src: url('./font2.woff2') format('woff2'), url('./font1.woff') format('woff');
+}
+
+:root {
+  font-family: 'Roboto';
+  font-size: 14px;
+}
+
+body {
+  font-family: 'Roboto';
+}
+
+.sidebar-link.active {
+  @apply text-indigo-400;
+}
+
+.scroll-table {
+  overflow: auto;
+  height: 500px;
+  display: inline-block;
+  margin-top: 45px;
+}
+
+thead div {
+  margin-top: -45px;
+  position: absolute;
+}
+
+.main-color {
+  color: #4830de;
+}
+/* 
+.sidebar {
+  @apply fixed md:relative top-0 min-h-screen text-white w-1/3 flex flex-col transform duration-300 ease-out flex-shrink-0 gap-4 md:pt-4;
+  background: #202225;
+
+  width: 75px;
+  box-sizing: border-box;
+} */
+
+.sidebar {
+  @apply min-h-screen flex flex-col transform duration-300 ease-out flex-shrink-0 gap-4 pt-4;
+  background: #202225;
+
+  width: 75px;
+  box-sizing: border-box;
+}
+
+.discord-button {
+  @apply p-4 w-min mx-auto cursor-pointer transition duration-500;
+}
+
+.discord-button.active {
+  background: #44a65e;
+  color: white;
+  @apply rounded-lg;
+}
+
+.discord-button:not(.active) {
+  background: #36393f;
+  color: #44a65e;
+  @apply rounded-full;
+}
+
+.test {
+  width: 100%;
+  height: 100%;
+}
+
+.font-satoshi {
+  font-family: 'Satoshi';
+}
+
+.text-faded {
+  color: #858585;
+}
+
+.bg-greeny {
+  background: #67b477;
+}
+
+.negative-bar {
+  background: #bc3636;
+  height: 20px;
+}
+
+.positive-bar {
+  background: #4830de;
+  height: 20px;
+}
+
+.neutral-bar {
+  background: #858585;
+  height: 20px;
+}

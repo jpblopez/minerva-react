@@ -21,16 +21,6 @@ module.exports = {
   ],
   plugins: ['react', 'prettier'],
   rules: {
-    'prettier/prettier': [
-      'warn',
-      {
-        semi: true,
-        useTabs: false,
-        tabWidth: 2,
-        jsxSingleQuote: false,
-        singleQuote: true,
-      },
-    ],
     'react/jsx-filename-extension': [
       1,
       {
