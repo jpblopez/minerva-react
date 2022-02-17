@@ -13,9 +13,15 @@ function App() {
         <div className="flex-grow bg-gray-100 md:h-auto min-h-screen md:min-h-0 ml-">
           <Switch>
             <Redirect from="/" exact to="/dashboard" />
-            <Route path="/dashboard" render={Dashboard} />
-            <Route path="/tweets/:id" render={TweetDetails} />
-            <Route path="/tweets" render={Tweets} />
+            <Route path="/dashboard">
+              <Dashboard />
+            </Route>
+            <Route path="/tweets/:id">
+              <TweetDetails />
+            </Route>
+            <Route path="/tweets">
+              <Tweets />
+            </Route>
           </Switch>
         </div>
       </main>
