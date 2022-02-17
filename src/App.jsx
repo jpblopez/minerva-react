@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import Sidebar from '@/components/Sidebar';
 import Dashboard from '@/pages/Dashboard';
 import Tweets from '@/pages/Tweets';
+import Clusters from '@/pages/Clusters';
 import TweetDetails from '@/pages/TweetDetails';
 
 function App() {
@@ -19,7 +20,7 @@ function App() {
             <Route path="/tweets/:id">
               <TweetDetails />
             </Route>
-            <Route path="/tweets">
+            <Route path="/tweets" render={<Tweets />}>
               <Tweets />
             </Route>
           </Switch>
