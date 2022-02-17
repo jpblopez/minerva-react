@@ -1,7 +1,14 @@
+import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom';
+import TweetController from '@/controllers/TweetController';
 
 const Tweets = () => {
-  console.log('this is a test');
+  const [tweets, setTweets] = useState([])
+  useEffect(() => {
+    TweetController.getAll().then((response) => {
+      setTweets(response.data.slice(0,10))
+    });
+  }, [])
 
   return (
     <div className="p-4">
@@ -47,15 +54,18 @@ const Tweets = () => {
             </tr>
           </thead>
           <tbody>
-            <tr className="hover:bg-gray-100 duration-200">
-              <td className="py-3 px-2">123219873946</td>
-              <td className="py-3 px-2">
-                <Link to="/tweets/1">This is just a random tweet ahaha</Link>
-              </td>
-              <td className="py-3 px-2">2021-11-01</td>
-              <td className="py-3 px-2">Accessibility</td>
-              <td className="py-3 px-2">Positive</td>
-            </tr>
+            {
+              tweets.map((tweet) =>
+                <tr className="hover:bg-gray-100 duration-200">
+                  <td className="py-3 px-2">{tweet.id}</td>
+                  <td className="py-3 px-2">
+                    <Link to={`/tweets/${tweet.id}`}>{tweet.full_text}</Link>
+                  </td>
+                  <td className="py-3 px-2">{tweet.date}</td>
+                  <td className="py-3 px-2">Accessibility</td>
+                  <td className="py-3 px-2">Positive</td>
+                </tr>)
+            }
           </tbody>
         </table>
       </div>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 
 import { Line, Pie } from 'react-chartjs-2';
 
@@ -55,7 +55,7 @@ const options = {
 };
 
 const Dashboard = () => {
-  console.log('this is the dashboard');
+  console.log("Dash")
 
   return (
     <div className="p-4">
