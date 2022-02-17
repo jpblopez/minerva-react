@@ -20,8 +20,11 @@ function App() {
             <Route path="/tweets/:id">
               <TweetDetails />
             </Route>
-            <Route path="/tweets" render={<Tweets />}>
-              <Tweets />
+            <Route path="/tweets">
+              <Tweets/>
+            </Route>
+            <Route path="/clusters">
+              <Clusters/>
             </Route>
           </Switch>
         </div>
