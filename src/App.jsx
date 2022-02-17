@@ -3,6 +3,7 @@ import { Switch, Route, Redirect } from 'react-router-dom';
 import Sidebar from '@/components/Sidebar';
 import Dashboard from '@/pages/Dashboard';
 import Tweets from '@/pages/Tweets';
+import Clusters from '@/pages/Clusters';
 import TweetDetails from '@/pages/TweetDetails';
 
 function App() {
@@ -16,6 +17,7 @@ function App() {
             <Route path="/dashboard" render={Dashboard} />
             <Route path="/tweets/:id" render={TweetDetails} />
             <Route path="/tweets" render={Tweets} />
+            <Route path="/clusters" render={Clusters} />
           </Switch>
         </div>
       </main>
