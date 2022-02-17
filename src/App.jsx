@@ -3,6 +3,7 @@ import { Switch, Route, Redirect } from 'react-router-dom';
 import Sidebar from '@/components/Sidebar';
 import Dashboard from '@/pages/Dashboard';
 import Tweets from '@/pages/Tweets';
+import Clusters from '@/pages/Clusters';
 import TweetDetails from '@/pages/TweetDetails';
 
 
