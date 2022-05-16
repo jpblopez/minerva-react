@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { Pie } from 'react-chartjs-2';
+import TweetController from '@/controllers/TweetController';
 
 const piedata = {
   labels: ['Positive', 'Negative', 'Neutral'],
@@ -16,35 +17,25 @@ const piedata = {
 };
 
 const TweetDetails = () => {
-  const [tweet, setTweet] = useState();
+  const [tweet, setTweet] = useState([]);
+  const [location, setLocation] = useState([]);
   const [loading, setLoading] = useState(false);
   const { id } = useParams();
 
   useEffect(() => {
     setLoading(true);
-    setTimeout(() => {
-      setTweet({
-        raw: 'This is the tweet',
-        cleaned: 'Cleaned',
-        date: '2022-01-01',
-        likes: 5,
-        retweets: 10,
-        id,
-        link: 'https://twitter.com/status/13712837912',
-      });
-
+    TweetController.getSpecificTweet(id).then(response => {
+      console.log(response.data);
+      setTweet(response.data.data);
+      setLocation(response.data.parameters);
       setLoading(false);
-    }, 1000);
-  }, []);
-
+    });
+  }, [id]);
   if (loading)
     return <div className="font-satoshi m-4">The page is loading</div>;
 
   if (!tweet) return <div className="font-satoshi m-4">Tweet not found</div>;
-
   const tweetDate = new Date(tweet.date).toLocaleDateString();
-  const location = tweet.location || 'No location';
-
   return (
     <div className="p-4">
       <div className="text-faded mb-4">
@@ -57,14 +48,14 @@ const TweetDetails = () => {
             <div className="text-faded mb-2 font-satoshi">
               Tweeted on {tweetDate}
             </div>
-            <div className="font-satoshi">{tweet.raw}</div>
+            <div className="font-satoshi">{tweet.tweet}</div>
           </div>
           <div className="bg-white p-4 mb-4">
             <div className="main-color text-2xl mb-4">Cleaned tweet</div>
             <div className="text-faded mb-2 font-satoshi">
               Tweeted on {tweetDate}
             </div>
-            <div className="font-satoshi">{tweet.cleaned}</div>
+            <div className="font-satoshi">{}</div>
           </div>
           <div className="flex flex-row gap-8">
             <div className="bg-white p-4 w-1/2">
@@ -78,11 +69,36 @@ const TweetDetails = () => {
                 <span>0.173</span>
               </div>
             </div>
-            <div className="bg-white p-4 w-1/2">
-              <div className="text-lg main-color mb-4">Sentiment</div>
-              <div className="w-1/2 mx-auto">
-                <Pie data={piedata} />
+            <div className="w-1/2 bg-white p-4 font-satoshi">
+              <div className="main-color text-lg flex flex-row justify-between items-baseline">
+                <span className="mb-4">Clusters Detected</span>
               </div>
+              <table className="w-full">
+                <thead className="main-color text-lg">
+                  <tr>
+                    <td className="px-2">Cluster</td>
+                    <td className="px-2">Confidence</td>
+                    <td className="px-2">Sentiment</td>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr className="hover:bg-gray-100 duration-200">
+                    <td className="py-3 px-2">Learning</td>
+                    <td className="py-3 px-2">100%</td>
+                    <td className="py-3 px-2">Positive</td>
+                  </tr>
+                  <tr className="hover:bg-gray-100 duration-200">
+                    <td className="py-3 px-2">Learning</td>
+                    <td className="py-3 px-2">100%</td>
+                    <td className="py-3 px-2">Positive</td>
+                  </tr>
+                  <tr className="hover:bg-gray-100 duration-200">
+                    <td className="py-3 px-2">Learning</td>
+                    <td className="py-3 px-2">100%</td>
+                    <td className="py-3 px-2">Positive</td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
@@ -99,19 +115,21 @@ const TweetDetails = () => {
             </div>
             <div className="font-satoshi mb-4">
               <div className="text-faded">Likes</div>
-              {tweet.likes}
+              {tweet.retweets_count}
             </div>
             <div className="font-satoshi mb-4">
               <div className="text-faded">Retweets</div>
-              {tweet.retweets}
+              {tweet.retweets_count}
             </div>
             <div className="font-satoshi mb-4">
               <div className="text-faded">Location</div>
-              {location}
+              {location.location}
             </div>
             <div className="font-satoshi mb-4">
               <div className="text-faded">Link</div>
-              <a href={tweet.link}>{tweet.link}</a>
+              <div className="w-100">
+                <a href={tweet.link}>{tweet.link}</a>
+              </div>
             </div>
           </div>
         </div>

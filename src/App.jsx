@@ -21,10 +21,10 @@ function App() {
               <TweetDetails />
             </Route>
             <Route path="/tweets">
-              <Tweets/>
+              <Tweets />
             </Route>
             <Route path="/clusters">
-              <Clusters/>
+              <Clusters />
             </Route>
           </Switch>
         </div>
