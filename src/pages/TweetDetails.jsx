@@ -36,9 +36,14 @@ const TweetDetails = () => {
 
   if (!tweet) return <div className="font-satoshi m-4">Tweet not found</div>;
   const tweetDate = new Date(tweet.date).toLocaleDateString();
-  const tfidfValues = tweet.tfidf.map((i, j) => ({
-    [tweet.words[j]]: i,
-  }));
+  const tfidfValues = tweet.tfidf.map((i, j) => {
+    const value = i;
+    const key = tweet.words[j];
+
+    return {
+      [key]: value,
+    };
+  });
   return (
     <div className="p-4">
       <div className="text-faded mb-4">
@@ -64,12 +69,11 @@ const TweetDetails = () => {
             <div className="bg-white p-4 w-1/2">
               <div className="text-lg main-color mb-4">Tokens</div>
               {tfidfValues.map(i => {
-                const tfidfDisplay = Object.entries(i);
-                console.log(tfidfDisplay);
+                const tfidfDisplay = Object.entries(i)[0];
                 return (
                   <div className="flex flex-row justify-between w-full">
                     <span>{tfidfDisplay[0]}</span>
-                    <span>{parseInt(tfidfDisplay[1], 10).toFixed(2)}</span>
+                    <span>{(+tfidfDisplay[1]).toFixed(2)}</span>
                   </div>
                 );
               })}
