@@ -19,7 +19,7 @@ const piedata = {
 const TweetDetails = () => {
   const [tweet, setTweet] = useState([]);
   const [location, setLocation] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const { id } = useParams();
 
   useEffect(() => {
@@ -36,6 +36,9 @@ const TweetDetails = () => {
 
   if (!tweet) return <div className="font-satoshi m-4">Tweet not found</div>;
   const tweetDate = new Date(tweet.date).toLocaleDateString();
+  const tfidfValues = tweet.tfidf.map((i, j) => ({
+    [tweet.words[j]]: i,
+  }));
   return (
     <div className="p-4">
       <div className="text-faded mb-4">
@@ -55,19 +58,21 @@ const TweetDetails = () => {
             <div className="text-faded mb-2 font-satoshi">
               Tweeted on {tweetDate}
             </div>
-            <div className="font-satoshi">{}</div>
+            <div className="font-satoshi">{tweet.cleaned}</div>
           </div>
           <div className="flex flex-row gap-8">
             <div className="bg-white p-4 w-1/2">
               <div className="text-lg main-color mb-4">Tokens</div>
-              <div className="flex flex-row justify-between w-full">
-                <span>random</span>
-                <span>0.857</span>
-              </div>
-              <div className="flex flex-row justify-between w-full">
-                <span>tweet</span>
-                <span>0.173</span>
-              </div>
+              {tfidfValues.map(i => {
+                const tfidfDisplay = Object.entries(i);
+                console.log(tfidfDisplay);
+                return (
+                  <div className="flex flex-row justify-between w-full">
+                    <span>{tfidfDisplay[0]}</span>
+                    <span>{parseInt(tfidfDisplay[1], 10).toFixed(2)}</span>
+                  </div>
+                );
+              })}
             </div>
             <div className="w-1/2 bg-white p-4 font-satoshi">
               <div className="main-color text-lg flex flex-row justify-between items-baseline">
@@ -107,7 +112,7 @@ const TweetDetails = () => {
             <div className="main-color text-lg mb-4">Metadata</div>
             <div className="font-satoshi mb-4">
               <div className="text-faded">Tweet ID</div>
-              {tweet.date}
+              {tweet.id}
             </div>
             <div className="font-satoshi mb-4">
               <div className="text-faded">Date</div>
@@ -127,9 +132,9 @@ const TweetDetails = () => {
             </div>
             <div className="font-satoshi mb-4">
               <div className="text-faded">Link</div>
-              <div className="w-100">
-                <a href={tweet.link}>{tweet.link}</a>
-              </div>
+              <a className="break-words" href={tweet.link}>
+                {tweet.link}
+              </a>
             </div>
           </div>
         </div>
