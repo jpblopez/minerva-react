@@ -1,19 +1,7 @@
-import React, {useEffect} from 'react';
-
+import React, { useState, useEffect, useContext } from 'react';
+import { Link } from 'react-router-dom';
 import { Line, Pie } from 'react-chartjs-2';
-
-const piedata = {
-  labels: ['Positive', 'Negative', 'Neutral'],
-  datasets: [
-    {
-      label: '# of Votes',
-      data: [12, 19, 3],
-      backgroundColor: ['#4830de', '#BC3636', '#858585'],
-      borderColor: ['#4830de', '#BC3636', '#858585'],
-      borderWidth: 1,
-    },
-  ],
-};
+import TweetDataContext from '../context/TweetDataContext';
 
 const data = {
   labels: ['1', '2', '3', '4', '5', '6'],
@@ -55,7 +43,89 @@ const options = {
 };
 
 const Dashboard = () => {
-  console.log("Dash")
+  const AppContext = useContext(TweetDataContext)
+  const [positiveTweets, setPositiveTweets] = useState([])
+  const [neutralTweets, setNeutralTweets] = useState([])
+  const [negativeTweets, setNegativeTweets] = useState([])
+  const [rawTweetData, setRawTweetData] = useState(null);
+  const [cleanedTweetData, setCleanedTweetData] = useState(null);
+
+  const piedata = {
+    labels: ['Positive', 'Negative', 'Neutral'],
+    datasets: [
+      {
+        label: '# of Votes',
+        data: [positiveTweets.length, negativeTweets.length, neutralTweets.length],
+        backgroundColor: ['#4830de', '#BC3636', '#858585'],
+        borderColor: ['#4830de', '#BC3636', '#858585'],
+        borderWidth: 1,
+      },
+    ],
+  };
+
+  useEffect(() => {
+    const getTweets = setTimeout(() => {
+      setRawTweetData(AppContext)
+      setPositiveTweets(AppContext.filter((tweet)=>tweet.sentiment === "Positive"))
+      setNeutralTweets(AppContext.filter((tweet)=>tweet.sentiment === "Neutral"))
+      setNegativeTweets(AppContext.filter((tweet)=>tweet.sentiment === "Negative"))
+      setCleanedTweetData([])
+    }, 1000)
+
+    return () =>
+      clearTimeout(getTweets)
+  }, [AppContext])
+
+  const DatabaseDetails = () => 
+    <div className="w-full h-full bg-white p-4">
+      <div className="text-xl main-color mb-4">Database</div>
+      <div className="mb-4">
+        <div className="font-satoshi mb-1 text-faded">Raw tweets</div>
+        {
+          (
+            rawTweetData == null &&
+            <div className="font-satoshi">Loading...</div>
+          ) ||
+          <div className="font-satoshi">{rawTweetData.length}</div>
+        }
+      </div>
+      <div className="mb-4">
+        <div className="font-satoshi mb-1 text-faded">Cleaned tweets</div>
+        {
+          (
+            cleanedTweetData == null &&
+            <div className="font-satoshi">Loading...</div>
+          ) ||
+          <div className="font-satoshi">{cleanedTweetData.length}</div>
+        }
+      </div>
+      <Link className="bg-greeny py-2 px-6 text-white" to="/tweets">
+          View more
+      </Link>
+    </div>
+
+  const ScraperDetails = () =>
+    <div className="w-full h-full bg-white p-4">
+      <div className="main-color text-lg flex flex-row justify-between items-baseline">
+        <span>Scraper</span>
+        <span className="text-sm text-faded font-satoshi">Settings</span>
+      </div>
+      <div className="my-4">
+        <div className="font-satoshi mb-1 text-faded">
+          Last scraped on
+        </div>
+        <div className="font-satoshi">November 12, 2021</div>
+      </div>
+      <div className="mb-4">
+        <div className="font-satoshi mb-1 text-faded">
+          Next scraped on
+        </div>
+        <div className="font-satoshi">November 19, 2021</div>
+      </div>
+      <button className="bg-greeny py-2 px-6 text-white" type="button">
+        Scrape now
+      </button>
+    </div>
 
   return (
     <div className="p-4">
@@ -65,41 +135,8 @@ const Dashboard = () => {
           <Line data={data} options={options} />
         </div>
         <div className="w-1/4 flex flex-col gap-4">
-          <div className="w-full h-full bg-white p-4">
-            <div className="main-color text-lg flex flex-row justify-between items-baseline">
-              <span>Scraper</span>
-              <span className="text-sm text-faded font-satoshi">Settings</span>
-            </div>
-            <div className="my-4">
-              <div className="font-satoshi mb-1 text-faded">
-                Last scraped on
-              </div>
-              <div className="font-satoshi">November 12, 2021</div>
-            </div>
-            <div className="mb-4">
-              <div className="font-satoshi mb-1 text-faded">
-                Next scraped on
-              </div>
-              <div className="font-satoshi">November 19, 2021</div>
-            </div>
-            <button className="bg-greeny py-2 px-6 text-white" type="button">
-              Scrape now
-            </button>
-          </div>
-          <div className="w-full h-full bg-white p-4">
-            <div className="text-xl main-color mb-4">Database</div>
-            <div className="mb-4">
-              <div className="font-satoshi mb-1 text-faded">Raw tweets</div>
-              <div className="font-satoshi">23,012</div>
-            </div>
-            <div className="mb-4">
-              <div className="font-satoshi mb-1 text-faded">Cleaned tweets</div>
-              <div className="font-satoshi">20,566</div>
-            </div>
-            <button className="bg-greeny py-2 px-6 text-white" type="button">
-              View more
-            </button>
-          </div>
+          <ScraperDetails />
+          <DatabaseDetails />
         </div>
       </div>
       <div className="flex flex-row gap-4 justify-between mt-4">
