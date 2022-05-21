@@ -7,6 +7,7 @@ import Clusters from '@/pages/Clusters';
 import TweetDetails from '@/pages/TweetDetails';
 import TweetController from '@/controllers/TweetController';
 import TweetDataContext from './context/TweetDataContext';
+import Process from './pages/Process';
 
 function App() {
   const [tweetData, setTweetData] = useState([])
@@ -36,6 +37,9 @@ function App() {
               </Route>
               <Route path="/clusters">
                 <Clusters />
+              </Route>
+              <Route path="/process">
+                <Process />
               </Route>
             </Switch>
           </div>

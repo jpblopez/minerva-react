@@ -88,7 +88,6 @@ const Tweets = () => {
             {
               tweets.map((tweet, index) => {
                 if (index < (page - 1) * pageSize || index >= page * pageSize) return <></>
-                console.log(tweet)
                 return (<tr className="hover:bg-gray-100 duration-200" key={tweet.id}>
                   <td className="py-3 px-2" key={tweet.id}>
                     {tweet.id}

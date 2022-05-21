@@ -44,10 +44,10 @@ const options = {
 
 const Dashboard = () => {
   const AppContext = useContext(TweetDataContext)
+  const [rawTweetData, setRawTweetData] = useState(null);
   const [positiveTweets, setPositiveTweets] = useState([])
   const [neutralTweets, setNeutralTweets] = useState([])
   const [negativeTweets, setNegativeTweets] = useState([])
-  const [rawTweetData, setRawTweetData] = useState(null);
   const [cleanedTweetData, setCleanedTweetData] = useState(null);
 
   const piedata = {
@@ -64,16 +64,11 @@ const Dashboard = () => {
   };
 
   useEffect(() => {
-    const getTweets = setTimeout(() => {
       setRawTweetData(AppContext)
       setPositiveTweets(AppContext.filter((tweet)=>tweet.sentiment === "Positive"))
       setNeutralTweets(AppContext.filter((tweet)=>tweet.sentiment === "Neutral"))
       setNegativeTweets(AppContext.filter((tweet)=>tweet.sentiment === "Negative"))
       setCleanedTweetData([])
-    }, 1000)
-
-    return () =>
-      clearTimeout(getTweets)
   }, [AppContext])
 
   const DatabaseDetails = () => 
