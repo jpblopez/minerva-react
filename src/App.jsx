@@ -8,13 +8,15 @@ import TweetDetails from '@/pages/TweetDetails';
 import TweetController from '@/controllers/TweetController';
 import TweetDataContext from './context/TweetDataContext';
 import Process from './pages/Process';
+import PreprocessedTweetDetails from './components/PreprocessedTweetDetails';
+import TFIDFDetails from './components/TFIDFDetails';
 
 function App() {
   const [tweetData, setTweetData] = useState([])
 
   useEffect(() => {
-    TweetController.getAll().then(response => {
-      setTweetData(response.data);
+    TweetController.getAll(true).then(response => {
+      setTweetData(response.data)
     });
   }, []);
 
@@ -40,6 +42,12 @@ function App() {
               </Route>
               <Route path="/process">
                 <Process />
+              </Route>
+              <Route path="/preprocessed_tweet/:id">
+                <PreprocessedTweetDetails />
+              </Route>
+              <Route path="/vectors/:id">
+                <TFIDFDetails />
               </Route>
             </Switch>
           </div>

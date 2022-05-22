@@ -88,12 +88,12 @@ const Tweets = () => {
             {
               tweets.map((tweet, index) => {
                 if (index < (page - 1) * pageSize || index >= page * pageSize) return <></>
-                return (<tr className="hover:bg-gray-100 duration-200" key={tweet.id}>
-                  <td className="py-3 px-2" key={tweet.id}>
-                    {tweet.id}
+                return (<tr className="hover:bg-gray-100 duration-200" key={tweet.tweet_id}>
+                  <td className="py-3 px-2">
+                    {tweet.tweet_id}
                   </td>
                   <td className="py-3 px-2">
-                    <Link to={`/tweets/${tweet.id}`}>{tweet.full_text}</Link>
+                    <Link to={`/tweets/${tweet.tweet_id}`}>{tweet.data.full_text}</Link>
                   </td>
                   <td className="py-3 px-2" key={tweet.date}>
                     {tweet.date}

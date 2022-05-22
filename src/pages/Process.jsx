@@ -8,11 +8,11 @@ import TweetDataContext from '../context/TweetDataContext';
 const Process = () => {
     const AppContext = useContext(TweetDataContext)
 
-    const [tabNo, setTabNo] = useState(1)
+    const [tabNo, setTabNo] = useState(0)
     const tabLabels = [
         "Step 1: Raw Tweets",
         "Step 2: Preprocess Tweets",
-        "Step 3: TF-IDF Tweets",
+        "Step 3: Vectorization",
         "Step 4: Self-Organizing Map",
         "Step 5: Sentiment Analysis",
         "Step 6: Integration",
@@ -43,7 +43,7 @@ const Process = () => {
                             if (index < tabNo) {bgColor = "w-12 h-2 rounded-sm cursor-pointer bg-green-400"}
                             else if (index === tabNo) {bgColor = "w-12 h-2 rounded-sm cursor-pointer bg-gray-600"}
                             else {bgColor = "w-12 h-2 rounded-sm cursor-pointer bg-gray-300"}
-                            return <span className={bgColor} onClick = {(()=>{setTabNo(index)})}/>
+                            return <span className={bgColor} onClick = {(()=>{setTabNo(index)})} key={tabLabels[index]}/>
                         })
                     }
                 </div>
