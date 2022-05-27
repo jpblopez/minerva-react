@@ -7,5 +7,9 @@ module.exports = {
   variants: {
     extend: {},
   },
-  plugins: [],
+  content: ['./src/**/*.{html,js}', './node_modules/tw-elements/dist/js/**/*.js'],
+  plugins: [
+    // eslint-disable-next-line global-require
+    require('tw-elements/dist/plugin')
+  ]
 };

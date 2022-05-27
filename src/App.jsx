@@ -12,17 +12,25 @@ import PreprocessedTweetDetails from './components/PreprocessedTweetDetails';
 import TFIDFDetails from './components/TFIDFDetails';
 
 function App() {
-  const [tweetData, setTweetData] = useState([])
+  const [tweetData, setTweetData] = useState([]);
+  const [cleanedTweetData, setCleanedTweetData] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     TweetController.getAll(true).then(response => {
-      setTweetData(response.data)
+      setTweetData(response.data);
+      TweetController.getAll(false, true).then(_response => {
+        setCleanedTweetData(_response.data);
+        setLoading(false);
+      });
     });
   }, []);
 
   return (
     <>
-      <TweetDataContext.Provider value={tweetData}>
+      <TweetDataContext.Provider
+        value={{ tweetData, cleanedTweetData, loading }}
+      >
         <main className="flex flex-row">
           <Sidebar />
           <div className="flex-grow bg-gray-100 md:h-auto min-h-screen md:min-h-0 ml-">
