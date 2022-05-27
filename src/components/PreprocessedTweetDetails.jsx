@@ -18,7 +18,7 @@ const PreprocessedTweetDetails = () => {
 
   const handleStepChange = increment => {
     if (stepNo + increment < 0) return;
-    if (stepNo + increment >= 12) return;
+    if (stepNo + increment >= 13) return;
 
     setStepNo(prevStepNo => prevStepNo + increment);
   };
@@ -36,6 +36,7 @@ const PreprocessedTweetDetails = () => {
     'Remove Punctuations',
     'Remove Double Spacing',
     'Remove Numbers',
+    'Remove Stop Words',
   ];
 
   useEffect(() => {

@@ -1,23 +1,13 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { Pie } from 'react-chartjs-2';
 import TweetController from '@/controllers/TweetController';
-
-const piedata = {
-  labels: ['Positive', 'Negative', 'Neutral'],
-  datasets: [
-    {
-      label: '# of Votes',
-      data: [12, 19, 3],
-      backgroundColor: ['#4830de', '#BC3636', '#858585'],
-      borderColor: ['#4830de', '#BC3636', '#858585'],
-      borderWidth: 1,
-    },
-  ],
-};
+import TweetDataContext from '../context/TweetDataContext';
 
 const TweetDetails = () => {
+  const AppContext = useContext(TweetDataContext);
   const [tweet, setTweet] = useState([]);
+  const [tfidf, setTfidf] = useState({});
+  const [cleaned, setCleaned] = useState([]);
   const [location, setLocation] = useState([]);
   const [loading, setLoading] = useState(true);
   const { id } = useParams();
@@ -25,10 +15,27 @@ const TweetDetails = () => {
   useEffect(() => {
     setLoading(true);
     TweetController.getSpecificTweet(id).then(response => {
-      console.log(response.data);
       setTweet(response.data.data);
       setLocation(response.data.parameters);
-      setLoading(false);
+      TweetController.getSpecificVectors(id)
+        .then(responsetfidf => {
+          let index = 0;
+          for (const gram of responsetfidf.data.grams) {
+            const tf =
+              responsetfidf.data.df[index] / responsetfidf.data.word_count;
+            const idf = Math.log(
+              (AppContext.tweetData.length + 1) /
+                (responsetfidf.data.idf[index] + 1) +
+                1
+            );
+            index++;
+            const temp = { ...tfidf, [gram]: tf * idf };
+            setTfidf(val => ({ ...val, [gram]: tf * idf }));
+          }
+          setLoading(false);
+          setCleaned(responsetfidf.data);
+        })
+        .catch(() => setLoading(false));
     });
   }, [id]);
   if (loading)
@@ -36,14 +43,6 @@ const TweetDetails = () => {
 
   if (!tweet) return <div className="font-satoshi m-4">Tweet not found</div>;
   const tweetDate = new Date(tweet.date).toLocaleDateString();
-  const tfidfValues = tweet.tfidf.map((i, j) => {
-    const value = i;
-    const key = tweet.words[j];
-
-    return {
-      [key]: value,
-    };
-  });
   return (
     <div className="p-4">
       <div className="text-faded mb-4">
@@ -63,20 +62,22 @@ const TweetDetails = () => {
             <div className="text-faded mb-2 font-satoshi">
               Tweeted on {tweetDate}
             </div>
-            <div className="font-satoshi">{tweet.cleaned}</div>
+            <div className="font-satoshi">{cleaned.cleaned}</div>
           </div>
           <div className="flex flex-row gap-8">
             <div className="bg-white p-4 w-1/2">
               <div className="text-lg main-color mb-4">Tokens</div>
-              {tfidfValues.map(i => {
-                const tfidfDisplay = Object.entries(i)[0];
-                return (
-                  <div className="flex flex-row justify-between w-full">
-                    <span>{tfidfDisplay[0]}</span>
-                    <span>{(+tfidfDisplay[1]).toFixed(2)}</span>
-                  </div>
-                );
-              })}
+              {tfidf
+                ? Object.entries(tfidf).map(i => {
+                    const [key, value] = i;
+                    return (
+                      <div className="flex flex-row justify-between w-full">
+                        <span>{key}</span>
+                        <span>{(+value).toFixed(2)}</span>
+                      </div>
+                    );
+                  })
+                : null}
             </div>
             <div className="w-1/2 bg-white p-4 font-satoshi">
               <div className="main-color text-lg flex flex-row justify-between items-baseline">

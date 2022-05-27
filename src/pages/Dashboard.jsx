@@ -28,7 +28,7 @@ const Dashboard = () => {
     plugins: {
       title: {
         display: true,
-        text: 'Chart.js Bar Chart - Stacked',
+        text: 'Sentiments of the Tweets',
       },
     },
     responsive: true,
@@ -145,9 +145,6 @@ const Dashboard = () => {
         <div className="font-satoshi mb-1 text-faded">Next scraped on</div>
         <div className="font-satoshi">November 19, 2021</div>
       </div>
-      <button className="bg-greeny py-2 px-6 text-white" type="button">
-        Scrape now
-      </button>
     </div>
   );
 
