@@ -37,4 +37,12 @@ export default class TweetController {
   static getSpecificVectors(tweetID) {
     return axios.get(`${baseUrl}/vectors/${tweetID}`);
   }
+
+  static getClusters() {
+    return axios.get(`${baseUrl}/som/cluster`);
+  }
+
+  static getSpecificClusters(clusterID) {
+    return axios.get(`${baseUrl}/som/cluster/${clusterID}`);
+  }
 }

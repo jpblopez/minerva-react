@@ -51,7 +51,7 @@ const Dashboard = () => {
     neutral: Array(12).fill(0),
     negative: Array(12).fill(0),
   };
-  if (AppContext.loading) return 'loading';
+  if (AppContext.loading) return <div className="p-4">Loading...</div>;
   for (const item of rawTweetData) {
     const date = new Date(item.data.date);
     const year = date.getFullYear();

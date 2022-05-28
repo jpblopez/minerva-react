@@ -4,7 +4,7 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import App from './App';
 import './assets/index.css';
 import 'tailwindcss/tailwind.css';
-import 'tw-elements';
+// import 'tw-elements';
 
 ReactDOM.render(
   <React.StrictMode>

@@ -1,16 +1,59 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import TweetController from '../controllers/TweetController';
 
 const SOM = () => {
-    const temp = 0;
-    
+    const [clusterList, setClusterList] = useState(null)
+
+    useEffect(() => {
+        TweetController.getClusters().then((response) => {
+            setClusterList(response.data.clusters)
+        })
+    }, [])
+
+
     return (<table className="w-full table-fixed">
         <thead className="main-color text-lg">
             <tr>
                 <td className="px-2">Tweet ID</td>
-                <td className="px-2">SOM</td>
+                {
+                    clusterList != null &&
+                    <>
+                        {
+                            Object.keys(clusterList[0]).map((_, index) =>
+                                <td>
+                                    {index + 1}
+                                </td>
+                            )
+                        }
+                    </>
+                }
             </tr>
         </thead>
         <tbody>
+            {
+                clusterList != null &&
+                <>
+                    {
+                        clusterList.map((cluster, index) =>
+                            <tr>
+                                <td>
+                                    <Link to={`/cluster/${index}`}>
+                                        Cluster {index + 1}
+                                    </Link>
+                                </td>
+                                {
+                                    Object.keys(cluster).map((word) =>
+                                        <td>
+                                            {word}
+                                        </td>
+                                    )
+                                }
+                            </tr>
+
+                        )}
+                </>
+            }
             {/* {
                 tweets.map((tweet, index) => {
                     if (index < (page - 1) * pageSize || index >= page * pageSize) return <></>

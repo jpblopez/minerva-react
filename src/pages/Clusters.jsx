@@ -8,6 +8,7 @@ const Clusters = () => {
   const [positiveTweets, setPositiveTweets] = useState([]);
   const [neutralTweets, setNeutralTweets] = useState([]);
   const [negativeTweets, setNegativeTweets] = useState([]);
+  const [selectedCluster, setSelectedCluster] = useState(0);
 
   useEffect(() => {
     setRawTweetData(AppContext.tweetData);
@@ -120,8 +121,18 @@ const Clusters = () => {
         </div>
       </div>
       <div className="w-full bg-white p-4 font-satoshi">
-        <div className="main-color text-lg flex flex-row justify-between items-baseline">
+        <div className="main-color text-lg flex flex-row justify-start space-x-6 items-baseline">
           <span className="mb-4">Tweets</span>
+          <select
+            onChange={event => {
+              setSelectedCluster(event.target.value);
+            }}
+            value={selectedCluster}
+          >
+            <option value="0">1</option>
+            <option value="1">2</option>
+            <option value="2">3</option>
+          </select>
         </div>
         <table className="w-full">
           <thead className="main-color text-lg">

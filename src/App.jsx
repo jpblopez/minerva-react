@@ -10,6 +10,7 @@ import TweetDataContext from './context/TweetDataContext';
 import Process from './pages/Process';
 import PreprocessedTweetDetails from './components/PreprocessedTweetDetails';
 import TFIDFDetails from './components/TFIDFDetails';
+import ClusterDetails from './components/ClusterDetails';
 
 function App() {
   const [tweetData, setTweetData] = useState([]);
@@ -41,7 +42,7 @@ function App() {
               </Route>
               <Route path="/tweets/:id">
                 <TweetDetails />
-              </Route>
+              </Route>----
               <Route path="/tweets">
                 <Tweets />
               </Route>
@@ -56,6 +57,9 @@ function App() {
               </Route>
               <Route path="/vectors/:id">
                 <TFIDFDetails />
+              </Route>
+              <Route path="/cluster/:id">
+                <ClusterDetails />
               </Route>
             </Switch>
           </div>
