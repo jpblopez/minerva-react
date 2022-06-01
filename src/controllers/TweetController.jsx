@@ -42,7 +42,15 @@ export default class TweetController {
     return axios.get(`${baseUrl}/som/cluster`);
   }
 
+  static getClusterWords() {
+    return axios.get(`${baseUrl}/som/cluster/words`);
+  }
+
   static getSpecificClusters(clusterID) {
     return axios.get(`${baseUrl}/som/cluster/${clusterID}`);
+  }
+
+  static getSOMDetails() {
+    return axios.get(`${baseUrl}/som/details`);
   }
 }

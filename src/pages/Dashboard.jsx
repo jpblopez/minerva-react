@@ -1,13 +1,13 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { Pie, Bar } from 'react-chartjs-2';
 import TweetDataContext from '../context/TweetDataContext';
+import TweetController from '../controllers/TweetController';
 
 const Dashboard = () => {
   const AppContext = useContext(TweetDataContext);
-  const [rawTweetData, setRawTweetData] = useState(AppContext.tweetData);
-  const [cleanedTweetData, setCleanedTweetData] = useState(null);
   const [yearTo, setYearTo] = useState(0);
+  const clusterList = useRef([])
 
   const labels = [
     'January',
@@ -43,16 +43,59 @@ const Dashboard = () => {
   };
 
   useEffect(() => {
-    setRawTweetData(AppContext.tweetData);
-    setCleanedTweetData(AppContext.cleanedTweetData);
-  }, [AppContext]);
+    TweetController.getSOMDetails().then((response) => {
+      if (AppContext.cleanedTweetData.length === 0) return;
+
+      AppContext.cleanedTweetData.forEach((tweet) => {
+        const data = {}
+        data.cluster = tweet.cluster
+      })
+
+      const currRow = response.data.size.row
+      const currCol = response.data.size.col
+
+      const positiveTweets = []
+      const negativeTweets = []
+      const neutralTweets = []
+      AppContext.cleanedTweetData.forEach((tweet) => {
+        if (tweet.overall_sentiment.sentiment === "positive") positiveTweets.push(tweet)
+        if (tweet.overall_sentiment.sentiment === "negative") negativeTweets.push(tweet)
+        if (tweet.overall_sentiment.sentiment === "neutral") neutralTweets.push(tweet)
+      })
+
+      for (let i = 0; i < currRow; i++) {
+        for (let j = 0; j < currCol; j++) {
+          const positiveRatio = (positiveTweets.length / AppContext.cleanedTweetData.length).toFixed(4) * 100
+          const negativeRatio = (negativeTweets.length / AppContext.cleanedTweetData.length).toFixed(4) * 100
+          const neutralRatio = (neutralTweets.length / AppContext.cleanedTweetData.length).toFixed(4) * 100
+          
+          clusterList.current.push(
+            <div className="mb-4 flex flex-row justify-between items-center gap-8">
+              <div className="w-1/2">{`Cluster [${i}][${j}]: `}</div>
+              <div className="flex flex-row w-full">
+                <div className="negative-bar" style={{
+                  width: `${negativeRatio}%`
+                }} />
+                <div className="neutral-bar" style={{
+                  width: `${neutralRatio}%`
+                }} />
+                <div className="positive-bar" style={{
+                  width: `${positiveRatio}%`
+                }} />
+              </div>
+            </div>
+          )
+        }
+      }
+    })
+  }, [AppContext, clusterList]);
   const graphData = {
     positive: Array(12).fill(0),
     neutral: Array(12).fill(0),
     negative: Array(12).fill(0),
   };
   if (AppContext.loading) return <div className="p-4">Loading...</div>;
-  for (const item of rawTweetData) {
+  for (const item of AppContext.tweetData) {
     const date = new Date(item.data.date);
     const year = date.getFullYear();
     // eslint-disable-next-line eqeqeq
@@ -116,15 +159,15 @@ const Dashboard = () => {
       <div className="text-xl main-color mb-4">Database</div>
       <div className="mb-4">
         <div className="font-satoshi mb-1 text-faded">Raw tweets</div>
-        {(rawTweetData == null && (
+        {(AppContext.tweetData == null && (
           <div className="font-satoshi">Loading...</div>
-        )) || <div className="font-satoshi">{rawTweetData.length}</div>}
+        )) || <div className="font-satoshi">{AppContext.tweetData.length}</div>}
       </div>
       <div className="mb-4">
         <div className="font-satoshi mb-1 text-faded">Cleaned tweets</div>
-        {(cleanedTweetData == null && (
+        {(AppContext.cleanedTweetData == null && (
           <div className="font-satoshi">Loading...</div>
-        )) || <div className="font-satoshi">{cleanedTweetData.length}</div>}
+        )) || <div className="font-satoshi">{AppContext.cleanedTweetData.length}</div>}
       </div>
       <Link className="bg-greeny py-2 px-6 text-white" to="/tweets">
         View more
@@ -181,30 +224,9 @@ const Dashboard = () => {
         </div>
         <div className="w-full h-full bg-white p-4">
           <div className="mb-4 main-color text-xl">Clusters</div>
-          <div className="mb-4 flex flex-row justify-between items-center gap-8">
-            <div className="w-1/2">Accessibility</div>
-            <div className="flex flex-row w-full">
-              <div className="negative-bar w-2/12" />
-              <div className="neutral-bar w-6/12" />
-              <div className="positive-bar w-4/12" />
-            </div>
-          </div>
-          <div className="mb-4 flex flex-row justify-between items-center gap-8">
-            <div className="w-1/2">Quality of Delivery</div>
-            <div className="flex flex-row w-full">
-              <div className="negative-bar w-2/12" />
-              <div className="neutral-bar w-6/12" />
-              <div className="positive-bar w-4/12" />
-            </div>
-          </div>
-          <div className="mb-4 flex flex-row justify-between items-center gap-8">
-            <div className="w-1/2">Content Quality</div>
-            <div className="flex flex-row w-full">
-              <div className="negative-bar w-2/12" />
-              <div className="neutral-bar w-6/12" />
-              <div className="positive-bar w-4/12" />
-            </div>
-          </div>
+          {
+            clusterList.current.map((div)=> div)
+          }
         </div>
       </div>
     </div>
