@@ -8,6 +8,7 @@ import TweetDetails from '@/pages/TweetDetails';
 import TweetController from '@/controllers/TweetController';
 import TweetDataContext from './context/TweetDataContext';
 import Process from './pages/Process';
+import Input from './pages/Input';
 import PreprocessedTweetDetails from './components/PreprocessedTweetDetails';
 import TFIDFDetails from './components/TFIDFDetails';
 import ClusterDetails from './components/ClusterDetails';
@@ -60,6 +61,9 @@ function App() {
               </Route>
               <Route path="/cluster/:id">
                 <ClusterDetails />
+              </Route>
+              <Route path="/analyze">
+                <Input />
               </Route>
             </Switch>
           </div>

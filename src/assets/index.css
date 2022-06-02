@@ -83,6 +83,17 @@ thead div {
   background: #67b477;
 }
 
+.standard-green-btn {
+  background: #44a65e;
+  color: white;
+}
+
+.standard-faded-btn {
+  background: #36393f;
+  color: white;
+}
+
+
 .negative-bar {
   background: #bc3636;
   height: 20px;

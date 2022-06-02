@@ -53,4 +53,8 @@ export default class TweetController {
   static getSOMDetails() {
     return axios.get(`${baseUrl}/som/details`);
   }
+
+  static analyzeTweet(data) {
+    return axios.post(`${baseUrl}/analyze`, { tweet: data })
+  }
 }
