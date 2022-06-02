@@ -14,66 +14,76 @@ const Clusters = () => {
   const [words, setWords] = useState([]);
   const [row, setRow] = useState(0);
   const [col, setCol] = useState(0);
+  const [selectedClusterList, setSelectedClusterList] = useState([]);
 
-  const pageSize = 5
-  const [page, setPage] = useState(1)
+  const pageSize = 5;
+  const [page, setPage] = useState(1);
 
-  const handlePagination = (increment) => {
+  const handlePagination = increment => {
     setPage(prevPage => {
-      if (prevPage + increment < 1) return 1
+      if (prevPage + increment < 1) return 1;
       // if (prevPage + increment > totalPages) return totalPages
-      return prevPage + increment
-    })
-  }
+      return prevPage + increment;
+    });
+  };
 
   useEffect(() => {
+    if (typeof AppContext === 'undefined') return;
+    const tempClusterList = AppContext.cleanedTweetData.filter(
+      tweet =>
+        tweet.cluster.row === Math.floor(selectedCluster / row) &&
+        tweet.cluster.col === selectedCluster % col
+    );
     setPositiveTweets(
-      AppContext.tweetData.filter(
+      tempClusterList.filter(
         tweet => tweet.overall_sentiment.sentiment === 'positive'
       )
     );
     setNeutralTweets(
-      AppContext.tweetData.filter(
+      tempClusterList.filter(
         tweet => tweet.overall_sentiment.sentiment === 'neutral'
       )
     );
     setNegativeTweets(
-      AppContext.tweetData.filter(
+      tempClusterList.filter(
         tweet => tweet.overall_sentiment.sentiment === 'negative'
       )
     );
-  }, [AppContext]);
+    setSelectedClusterList(tempClusterList);
+  }, [AppContext, row, col, selectedCluster]);
 
   useEffect(() => {
-    TweetController.getClusterWords().then((response) => {
-      const tempData = []
-      if (typeof response.data[selectedCluster] === "undefined") {
-        setWords([])
-        return
+    TweetController.getClusterWords().then(response => {
+      const tempData = [];
+      if (typeof response.data[selectedCluster] === 'undefined') {
+        setWords([]);
+        return;
       }
-      Object.keys(response.data[selectedCluster]).forEach((key) => {
+      Object.keys(response.data[selectedCluster]).forEach(key => {
         tempData.push({
           text: key,
-          value: response.data[selectedCluster][key]
-        })
-      })
-      setWords(tempData)
-    }
-    )
-  }, [selectedCluster])
+          value: response.data[selectedCluster][key],
+        });
+      });
+      setWords(tempData);
+    });
+  }, [selectedCluster]);
 
   useEffect(() => {
-    TweetController.getSOMDetails().then((response) => {
-      const tempClusters = []
-      setRow(response.data.size.row)
-      setCol(response.data.size.col)
-      for (let i = 0; i < response.data.size.row * response.data.size.col; i++) {
-        tempClusters.push(i)
+    TweetController.getSOMDetails().then(response => {
+      const tempClusters = [];
+      setRow(response.data.size.row);
+      setCol(response.data.size.col);
+      for (
+        let i = 0;
+        i < response.data.size.row * response.data.size.col;
+        i++
+      ) {
+        tempClusters.push(i);
       }
-      setClusterList(tempClusters)
-    })
-  }, [])
-
+      setClusterList(tempClusters);
+    });
+  }, []);
   const piedata = {
     labels: ['Positive', 'Negative', 'Neutral'],
     datasets: [
@@ -84,13 +94,20 @@ const Clusters = () => {
           negativeTweets.length,
           neutralTweets.length,
         ],
-        backgroundColor: ['#4830de', '#BC3636', '#858585'],
-        borderColor: ['#4830de', '#BC3636', '#858585'],
+        backgroundColor: [
+          'rgb(53, 162, 235)',
+          'rgb(255, 99, 132)',
+          'rgb(75, 192, 192)',
+        ],
+        borderColor: [
+          'rgb(53, 162, 235)',
+          'rgb(255, 99, 132)',
+          'rgb(75, 192, 192)',
+        ],
         borderWidth: 1,
       },
     ],
   };
-
   return (
     <div className="p-4 flex flex-col gap-4">
       <h1 className="main-color text-2xl mb-4">Clusters</h1>
@@ -105,7 +122,7 @@ const Clusters = () => {
                 <td className="py-3 px-2">Positive</td>
                 <td className="py-3 px-2">
                   {(
-                    (positiveTweets.length / AppContext.tweetData.length) *
+                    (positiveTweets.length / selectedClusterList.length) *
                     100
                   ).toFixed(2)}
                   %
@@ -114,9 +131,10 @@ const Clusters = () => {
               <tr className="hover:bg-gray-100 duration-200">
                 <td className="py-3 px-2">Neutral</td>
                 <td className="py-3 px-2">
-                  {((neutralTweets.length / AppContext.tweetData.length) * 100).toFixed(
-                    2
-                  )}
+                  {(
+                    (neutralTweets.length / selectedClusterList.length) *
+                    100
+                  ).toFixed(2)}
                   %
                 </td>
               </tr>
@@ -124,7 +142,7 @@ const Clusters = () => {
                 <td className="py-3 px-2">Negative</td>
                 <td className="py-3 px-2">
                   {(
-                    (negativeTweets.length / AppContext.tweetData.length) *
+                    (negativeTweets.length / selectedClusterList.length) *
                     100
                   ).toFixed(2)}
                   %
@@ -142,21 +160,18 @@ const Clusters = () => {
       <div className="w-full bg-white p-4 font-satoshi">
         <div className="main-color text-lg flex flex-row justify-start space-x-6 items-baseline">
           <span className="mb-4">Cluster</span>
-          {
-            clusterList.length !== 0 &&
+          {clusterList.length !== 0 && (
             <select
               onChange={event => {
                 setSelectedCluster(event.target.value);
               }}
               value={selectedCluster}
             >
-              {
-                clusterList.map((cluster, index) =>
-                  <option value={index}>{index + 1}</option>
-                )
-              }
+              {clusterList.map((cluster, index) => (
+                <option value={index}>{index + 1}</option>
+              ))}
             </select>
-          }
+          )}
         </div>
         <table className="w-full">
           <thead className="main-color text-lg">
@@ -168,30 +183,67 @@ const Clusters = () => {
             </tr>
           </thead>
           <tbody>
-            {
-              AppContext.cleanedTweetData
-                .filter((tweet) => tweet.cluster.row === Math.floor(selectedCluster / row) && tweet.cluster.col === selectedCluster % col)
-                .map((tweet, index) => {
-                  if (index < (page - 1) * pageSize || index >= page * pageSize) return <></>
-                  return <tr className="hover:bg-gray-100 duration-200">
+            {AppContext.cleanedTweetData
+              .filter(
+                tweet =>
+                  tweet.cluster.row === Math.floor(selectedCluster / row) &&
+                  tweet.cluster.col === selectedCluster % col
+              )
+              .map((tweet, index) => {
+                if (index < (page - 1) * pageSize || index >= page * pageSize)
+                  return <></>;
+                return (
+                  <tr className="hover:bg-gray-100 duration-200">
                     <td className="py-3 px-2">{tweet.tweet_id}</td>
                     <td className="py-3 px-2">{tweet.full_text}</td>
                     {/* <td className="py-3 px-2">Nov. 01, 2021</td>  */}
-                    <td className="py-3 px-2">{tweet.overall_sentiment.sentiment}</td>
+                    <td className="py-3 px-2">
+                      {tweet.overall_sentiment.sentiment}
+                    </td>
                   </tr>
-                })
-            }
+                );
+              })}
           </tbody>
         </table>
-        <div className='flex flex-row space-x-4'>
+        <div className="flex flex-row space-x-4">
           <div className="space-x-1">
-            <button title="previous" type="button" className="inline-flex items-center justify-center w-8 h-8 py-0 border rounded-md shadow" onClick={() => { handlePagination(-1) }}>
-              <svg viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round" className="w-4">
+            <button
+              title="previous"
+              type="button"
+              className="inline-flex items-center justify-center w-8 h-8 py-0 border rounded-md shadow"
+              onClick={() => {
+                handlePagination(-1);
+              }}
+            >
+              <svg
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth="2"
+                fill="none"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="w-4"
+              >
                 <polyline points="15 18 9 12 15 6" />
               </svg>
             </button>
-            <button title="next" type="button" className="inline-flex items-center justify-center w-8 h-8 py-0 border rounded-md shadow" onClick={() => { handlePagination(1) }}>
-              <svg viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round" className="w-4">
+            <button
+              title="next"
+              type="button"
+              className="inline-flex items-center justify-center w-8 h-8 py-0 border rounded-md shadow"
+              onClick={() => {
+                handlePagination(1);
+              }}
+            >
+              <svg
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth="2"
+                fill="none"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="w-4"
+              >
                 <polyline points="9 18 15 12 9 6" />
               </svg>
             </button>
