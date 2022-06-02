@@ -37,12 +37,16 @@ const TweetDetails = () => {
         })
         .catch(() => setLoading(false));
     });
-  }, [id]);
+  }, []);
   if (loading)
     return <div className="font-satoshi m-4">The page is loading</div>;
 
   if (!tweet) return <div className="font-satoshi m-4">Tweet not found</div>;
   const tweetDate = new Date(tweet.date).toLocaleDateString();
+  const tweetDetails = AppContext.cleanedTweetData.filter(
+    // eslint-disable-next-line eqeqeq
+    data => data.tweet_id == tweet.conversation_id
+  )[0];
   return (
     <div className="p-4">
       <div className="text-faded mb-4">
@@ -59,9 +63,6 @@ const TweetDetails = () => {
           </div>
           <div className="bg-white p-4 mb-4">
             <div className="main-color text-2xl mb-4">Cleaned tweet</div>
-            <div className="text-faded mb-2 font-satoshi">
-              Tweeted on {tweetDate}
-            </div>
             <div className="font-satoshi">{cleaned.cleaned}</div>
           </div>
           <div className="flex flex-row gap-8">
@@ -81,32 +82,36 @@ const TweetDetails = () => {
             </div>
             <div className="w-1/2 bg-white p-4 font-satoshi">
               <div className="main-color text-lg flex flex-row justify-between items-baseline">
-                <span className="mb-4">Clusters Detected</span>
+                <span className="mb-4">Cluster Data</span>
               </div>
               <table className="w-full">
                 <thead className="main-color text-lg">
                   <tr>
                     <td className="px-2">Cluster</td>
-                    <td className="px-2">Confidence</td>
+                    <td className="px-2">Distance</td>
                     <td className="px-2">Sentiment</td>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr className="hover:bg-gray-100 duration-200">
-                    <td className="py-3 px-2">Learning</td>
-                    <td className="py-3 px-2">100%</td>
-                    <td className="py-3 px-2">Positive</td>
-                  </tr>
-                  <tr className="hover:bg-gray-100 duration-200">
-                    <td className="py-3 px-2">Learning</td>
-                    <td className="py-3 px-2">100%</td>
-                    <td className="py-3 px-2">Positive</td>
-                  </tr>
-                  <tr className="hover:bg-gray-100 duration-200">
-                    <td className="py-3 px-2">Learning</td>
-                    <td className="py-3 px-2">100%</td>
-                    <td className="py-3 px-2">Positive</td>
-                  </tr>
+                  {tweetDetails ? (
+                    <tr className="hover:bg-gray-100 duration-200">
+                      <td className="py-3 px-2">
+                        {tweetDetails.cluster.row},{tweetDetails.cluster.col}
+                      </td>
+                      <td className="py-3 px-2">
+                        {Number(tweetDetails.cluster.distance).toFixed(2)}
+                      </td>
+                      <td className="py-3 px-2">
+                        {tweetDetails.overall_sentiment.sentiment}
+                      </td>
+                    </tr>
+                  ) : (
+                    <tr>
+                      <td colSpan={3} className="text-center">
+                        No Data
+                      </td>
+                    </tr>
+                  )}
                 </tbody>
               </table>
             </div>

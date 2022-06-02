@@ -14,21 +14,25 @@ const generateResultView = (original, result) => {
 
   const c = cleaned || empty;
   const g = grams.length ? grams.join(', ') : empty;
-  const d = chunk_details.length
-    ? chunk_details.map(cl => (
-        <tr>
-          <td>{cl.chunk}</td>
-          <td>
-            {cl.cluster.row}, {cl.cluster.col}
-          </td>
-          <td>{cl.cluster.distance}</td>
-          <td>{cl.sentiment}</td>
-          <td>{cl.score}</td>
-        </tr>
-      ))
-    : <tr>
-      <td colSpan="5" className='text-center'>{empty}</td>
+  const d = chunk_details.length ? (
+    chunk_details.map(cl => (
+      <tr>
+        <td>{cl.chunk}</td>
+        <td>
+          {cl.cluster.row}, {cl.cluster.col}
+        </td>
+        <td>{Number(cl.cluster.distance).toFixed(2)}</td>
+        <td>{cl.sentiment}</td>
+        <td>{Number(cl.score).toFixed(2)}</td>
+      </tr>
+    ))
+  ) : (
+    <tr>
+      <td colSpan="5" className="text-center">
+        {empty}
+      </td>
     </tr>
+  );
 
   return (
     <>
@@ -52,7 +56,7 @@ const generateResultView = (original, result) => {
       </div>
       <div className="mb-4">
         <div className="main-color text-lg opacity-80">Cluster</div>
-        <table className='w-full text-left'>
+        <table className="w-full text-left">
           <thead>
             <tr>
               <th>Chunk</th>

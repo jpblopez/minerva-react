@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext, useMemo } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import TweetDataContext from '../context/TweetDataContext';
 
@@ -10,12 +10,17 @@ const Tweets = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [dateFrom, setDateFrom] = useState('');
   const [dateTo, setDateTo] = useState('');
+  const [clusterNum, setClusterNum] = useState({});
 
   useEffect(() => {
     if (typeof AppContext === 'undefined') setTweets([]);
     setTweets(AppContext.tweetData);
+    const temp = {};
+    for (const cluster of AppContext.cleanedTweetData) {
+      temp[cluster.tweet_id] = [cluster.cluster.row, cluster.cluster.col];
+    }
+    setClusterNum(temp);
   }, [AppContext]);
-
   const filteredTweets = tweets.filter(val => {
     const tweetDate = new Date(val.data.date);
     if (val.data.full_text.toLowerCase().includes(searchTerm.toLowerCase())) {
@@ -28,7 +33,6 @@ const Tweets = () => {
     return false;
   });
   const totalPages = Math.ceil(filteredTweets.length / pageSize);
-
   const handlePagination = increment => {
     setPage(prevPage => {
       if (prevPage + increment < 1) return 1;
@@ -36,7 +40,7 @@ const Tweets = () => {
       return prevPage + increment;
     });
   };
-
+  console.log(clusterNum);
   return (
     <div className="p-4">
       <h1 className="main-color text-2xl mb-4">Tweets</h1>
@@ -132,7 +136,7 @@ const Tweets = () => {
               <td className="px-2">Tweet ID</td>
               <td className="px-2">Tweet</td>
               <td className="px-2">Date</td>
-              <td className="px-2">Cluster</td>
+              <td className="px-2">Cluster Number</td>
               <td className="px-2">Sentiment</td>
             </tr>
           </thead>
@@ -140,6 +144,7 @@ const Tweets = () => {
             {filteredTweets.map((tweet, index) => {
               if (index < (page - 1) * pageSize || index >= page * pageSize)
                 return <></>;
+              const temp = clusterNum[tweet.tweet_id];
               return (
                 <tr
                   className="hover:bg-gray-100 duration-200"
@@ -154,7 +159,9 @@ const Tweets = () => {
                   <td className="py-3 px-2" key={tweet.data.date}>
                     {tweet.data.date}
                   </td>
-                  <td className="py-3 px-2">Accessibility</td>
+                  <td className="py-3 px-2">
+                    {temp ? temp.join(',') : 'No Cluster'}
+                  </td>
                   <td
                     className="py-3 px-2"
                     key={tweet.overall_sentiment.sentiment}

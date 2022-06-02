@@ -7,7 +7,7 @@ import TweetController from '../controllers/TweetController';
 const Dashboard = () => {
   const AppContext = useContext(TweetDataContext);
   const [yearTo, setYearTo] = useState(0);
-  const clusterList = useRef([])
+  const clusterList = useRef([]);
 
   const labels = [
     'January',
@@ -43,51 +43,72 @@ const Dashboard = () => {
   };
 
   useEffect(() => {
-    TweetController.getSOMDetails().then((response) => {
+    TweetController.getSOMDetails().then(response => {
       if (AppContext.cleanedTweetData.length === 0) return;
 
-      AppContext.cleanedTweetData.forEach((tweet) => {
-        const data = {}
-        data.cluster = tweet.cluster
-      })
+      AppContext.cleanedTweetData.forEach(tweet => {
+        const data = {};
+        data.cluster = tweet.cluster;
+      });
 
-      const currRow = response.data.size.row
-      const currCol = response.data.size.col
+      const currRow = response.data.size.row;
+      const currCol = response.data.size.col;
 
-      const positiveTweets = []
-      const negativeTweets = []
-      const neutralTweets = []
-      AppContext.cleanedTweetData.forEach((tweet) => {
-        if (tweet.overall_sentiment.sentiment === "positive") positiveTweets.push(tweet)
-        if (tweet.overall_sentiment.sentiment === "negative") negativeTweets.push(tweet)
-        if (tweet.overall_sentiment.sentiment === "neutral") neutralTweets.push(tweet)
-      })
+      const positiveTweets = [];
+      const negativeTweets = [];
+      const neutralTweets = [];
+      AppContext.cleanedTweetData.forEach(tweet => {
+        if (tweet.overall_sentiment.sentiment === 'positive')
+          positiveTweets.push(tweet);
+        if (tweet.overall_sentiment.sentiment === 'negative')
+          negativeTweets.push(tweet);
+        if (tweet.overall_sentiment.sentiment === 'neutral')
+          neutralTweets.push(tweet);
+      });
 
       for (let i = 0; i < currRow; i++) {
         for (let j = 0; j < currCol; j++) {
-          const positiveRatio = (positiveTweets.length / AppContext.cleanedTweetData.length).toFixed(4) * 100
-          const negativeRatio = (negativeTweets.length / AppContext.cleanedTweetData.length).toFixed(4) * 100
-          const neutralRatio = (neutralTweets.length / AppContext.cleanedTweetData.length).toFixed(4) * 100
-          
+          const positiveRatio =
+            (
+              positiveTweets.length / AppContext.cleanedTweetData.length
+            ).toFixed(4) * 100;
+          const negativeRatio =
+            (
+              negativeTweets.length / AppContext.cleanedTweetData.length
+            ).toFixed(4) * 100;
+          const neutralRatio =
+            (neutralTweets.length / AppContext.cleanedTweetData.length).toFixed(
+              4
+            ) * 100;
+
           clusterList.current.push(
             <div className="mb-4 flex flex-row justify-between items-center gap-8">
               <div className="w-1/2">{`Cluster [${i}][${j}]: `}</div>
               <div className="flex flex-row w-full">
-                <div className="negative-bar" style={{
-                  width: `${negativeRatio}%`
-                }} />
-                <div className="neutral-bar" style={{
-                  width: `${neutralRatio}%`
-                }} />
-                <div className="positive-bar" style={{
-                  width: `${positiveRatio}%`
-                }} />
+                <div
+                  className="negative-bar"
+                  style={{
+                    width: `${negativeRatio}%`,
+                  }}
+                />
+                <div
+                  className="neutral-bar"
+                  style={{
+                    width: `${neutralRatio}%`,
+                  }}
+                />
+                <div
+                  className="positive-bar"
+                  style={{
+                    width: `${positiveRatio}%`,
+                  }}
+                />
               </div>
             </div>
-          )
+          );
         }
       }
-    })
+    });
   }, [AppContext, clusterList]);
   const graphData = {
     positive: Array(12).fill(0),
@@ -167,7 +188,11 @@ const Dashboard = () => {
         <div className="font-satoshi mb-1 text-faded">Cleaned tweets</div>
         {(AppContext.cleanedTweetData == null && (
           <div className="font-satoshi">Loading...</div>
-        )) || <div className="font-satoshi">{AppContext.cleanedTweetData.length}</div>}
+        )) || (
+          <div className="font-satoshi">
+            {AppContext.cleanedTweetData.length}
+          </div>
+        )}
       </div>
       <Link className="bg-greeny py-2 px-6 text-white" to="/tweets">
         View more
@@ -222,12 +247,12 @@ const Dashboard = () => {
             <Pie data={piedata} />
           </div>
         </div>
-        <div className="w-full h-full bg-white p-4">
+        {/* <div className="w-full h-full bg-white p-4">
           <div className="mb-4 main-color text-xl">Clusters</div>
           {
             clusterList.current.map((div)=> div)
           }
-        </div>
+        </div> */}
       </div>
     </div>
   );

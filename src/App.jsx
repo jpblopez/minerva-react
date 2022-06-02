@@ -43,7 +43,8 @@ function App() {
               </Route>
               <Route path="/tweets/:id">
                 <TweetDetails />
-              </Route>----
+              </Route>
+              ----
               <Route path="/tweets">
                 <Tweets />
               </Route>
